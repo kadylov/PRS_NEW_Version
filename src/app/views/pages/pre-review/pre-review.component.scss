@@ -1,0 +1,14 @@
+.snackbar2 {
+	height: 90px;
+	padding: 30px !important; // spacing between the text and boundary
+	background-color: #1f1e2c;
+	color: #ffffff;
+	font-weight: 500;
+	font-family: inherit;
+
+	.mat-button-wrapper {
+		color: black !important; // action text color
+	}
+}
+
+

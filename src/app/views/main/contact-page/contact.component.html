@@ -1,0 +1,109 @@
+<div class="d-flex justify-content-center" style="height: 82%;">
+	<div class="container my-5 d-flex justify-content-center" style="height:550px;">
+
+
+		<div class="contact">
+			<div class="mt-4">
+				<span class="text-center my-5"><h3>How Can We Help you</h3></span>
+
+				<!--begin::Form-->
+				<form class="my-5" [formGroup]="contactForm">
+					<div class="form-group">
+						<mat-form-field>
+							<mat-label>Full Name</mat-label>
+							<input matInput type="text" placeholder="fullname" formControlName="fullname"
+								   autocomplete="off"/>
+							<mat-error *ngIf="isControlHasError('fullname','required')">
+								<strong>Required field</strong>
+							</mat-error>
+							<mat-error *ngIf="isControlHasError('fullname','minlength')">
+								<strong>Minimum field length: 3</strong>
+							</mat-error>
+							<mat-error *ngIf="isControlHasError('fullname','maxlength')">
+								<strong>Maximum field length: 320</strong>
+							</mat-error>
+						</mat-form-field>
+					</div>
+
+
+					<div class="form-group">
+						<mat-form-field>
+							<mat-label>Email</mat-label>
+							<input matInput type="email" placeholder="email" formControlName="email"
+								   autocomplete="off"/>
+							<mat-error *ngIf="isControlHasError('email','required')">
+								<strong>Required field</strong>
+							</mat-error>
+							<mat-error *ngIf="isControlHasError('email','email')">
+								<strong>Invalid field</strong>
+							</mat-error>
+							<mat-error *ngIf="isControlHasError('email','minlength')">
+								<strong>Minimum field length: 3</strong>
+							</mat-error>
+							<mat-error *ngIf="isControlHasError('email','maxlength')">
+								<strong>Maximum field length: 320</strong>
+							</mat-error>
+						</mat-form-field>
+					</div>
+
+					<div class="form-group">
+						<mat-form-field>
+							<mat-label>Subject</mat-label>
+							<input matInput type="text" placeholder="subject" formControlName="subject"
+								   autocomplete="off"/>
+							<mat-error *ngIf="isControlHasError('subject','required')">
+								<strong>Required field</strong>
+							</mat-error>
+							<mat-error *ngIf="isControlHasError('subject','minlength')">
+								<strong>Minimum field length: 3</strong>
+							</mat-error>
+							<mat-error *ngIf="isControlHasError('subject','maxlength')">
+								<strong>Maximum field length: 320</strong>
+							</mat-error>
+						</mat-form-field>
+					</div>
+
+					<div class="form-group">
+						<mat-form-field>
+							<mat-label>Message</mat-label>
+							<textarea matInput
+									  cdkTextareaAutosize
+									  #autosize="cdkTextareaAutosize"
+									  cdkAutosizeMinRows="4"
+									  cdkAutosizeMaxRows="4"
+									  formControlName="cmessage"
+							></textarea>
+							<mat-error *ngIf="isControlHasError('cmessage','required')">
+								<strong>Required field</strong>
+							</mat-error>
+							<mat-error *ngIf="isControlHasError('cmessage','minlength')">
+								<strong> Minimum field length: 3</strong>
+							</mat-error>
+							<mat-error *ngIf="isControlHasError('cmessage','maxlength')">
+								<strong> Maximum field length: 100</strong>
+							</mat-error>
+						</mat-form-field>
+					</div>
+
+					<!--begin::Action-->
+					<div class="d-flex justify-content-center">
+						<span class="mr-4">
+							<button (click)="submit()"
+								class="btn btn-primary btn-elevate">Submit
+							</button>
+						</span>
+
+						<span>
+							<button routerLink="/"
+								class="btn btn-secondary btn-elevate">Cancel
+							</button>
+						</span>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</div>
+
+
+</div>

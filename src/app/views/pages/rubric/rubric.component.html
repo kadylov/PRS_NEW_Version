@@ -1,0 +1,65 @@
+<div class="flex-column bg-white w-50">
+	<div class="p-5 text-center">
+		<h3>Update Rubric For The Scorecard</h3>
+	</div>
+
+	<div>
+
+		<div class="d-flex justify-content-center" style="font-weight: 500;">
+			<ngb-alert class="form-group w-65"
+						*ngIf="confMsg"
+					   [dismissible]="false"
+					   [type]='alertType'
+					   (close)="confMsg = ''">
+
+				{{confMsg}}
+			</ngb-alert>
+		</div>
+
+		<form class="d-flex justify-content-center" [formGroup]="rubricForm" autocomplete="off">
+
+			<div class="form-group w-65">
+				<mat-form-field	class="mb-2" *ngFor="let r of rubrics">
+					<mat-label>{{r.RubricID}}</mat-label>
+					<input matInput type="text" [(ngModel)]="r.Text"
+						   autocomplete="off"
+						   formControlName="{{r.RubricID}}"
+					/>
+					<mat-error *ngIf="isControlHasError(r.RubricID,'required')">
+						<strong>Required field</strong>
+					</mat-error>
+					<mat-error *ngIf="isControlHasError(r.RubricID,'minlength')">
+						<strong>Minimum Length: 6</strong>
+					</mat-error>
+					<mat-error *ngIf="isControlHasError(r.RubricID,'maxlength')">
+						<strong>Maximum length: 120</strong>
+					</mat-error>
+
+				</mat-form-field>
+
+
+
+				<div class="d-flex justify-content-center mt-4">
+					<a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="submit()"
+					   mat-raised-button matTooltip="Submit & Continue">
+						<span class="kt-hidden-mobile">Submit</span>
+					</a>
+					<a [routerLink]="['../Dashboard']"
+					   class="btn btn-secondary kt-margin-r-10"
+					   mat-raised-button
+					   matTooltip="Back to the work list"
+					>
+						<span class="kt-hidden-mobile">Cancel</span>
+					</a>
+				</div>
+
+
+			</div>
+
+		</form>
+	</div>
+</div>
+
+
+
+

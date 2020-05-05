@@ -1,0 +1,61 @@
+<div class="row">
+	<div class="col" *ngIf="summary">
+		<div class="kt-portlet">
+			<div class="kt-portlet__head">
+				<div class="kt-portlet__head-caption">
+					<div class="kt-portlet__head-title">
+						<span class="kt-portlet__head-icon kt-hide">
+							<i class="la la-gear"></i>
+						</span>
+						<h3 class="kt-portlet__head-text">
+							Work Title: {{summary['Title']}}
+						</h3>
+					</div>
+				</div>
+			</div>
+			<div class="kt-portlet__body">
+
+
+<!--				<div *ngIf="summary['Status']==='scored'">-->
+					<work-summary [scorecards]="summary['Scorecards']"></work-summary>
+<!--				</div>-->
+
+
+
+				<div class="align-self-center d-flex mt-5" *ngIf="summary['Status']==='scored'; else showMainMenuBtn">
+					<a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary"
+					   mat-raised-button matTooltip="Accept Work"
+
+					   (click)="onClick('accepted')"
+					>
+						<span class="kt-hidden-mobile">Accept</span>
+					</a>
+
+					<a href="javascript:;"
+					   class="btn btn-primary kt-margin-r-10" color="warn"
+					   mat-raised-button matTooltip="Reject Work"
+
+					   (click)="onClick('rejected')"
+					>
+						<span class="kt-hidden-mobile">Reject</span>
+					</a>
+				</div>
+
+				<ng-template #showMainMenuBtn>
+					<div class="align-self-center d-flex mt-5">
+						<button
+							(click)="onClick()"
+							class="btn btn-primary kt-margin-r-10" color="primary"
+							mat-raised-button matTooltip="Go Back to Previous Page"
+						>
+							<span class="kt-hidden-mobile">Main Menu</span>
+						</button>
+
+					</div>
+				</ng-template>
+
+				​
+			</div>
+		</div>
+	</div>
+</div>

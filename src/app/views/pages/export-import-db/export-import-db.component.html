@@ -1,0 +1,70 @@
+<div class="row">
+	<div class="col-xl-10" style="font-weight: 500;">
+		<ngb-alert *ngIf="confMsg"
+				   [dismissible]="false"
+				   [type]='alertType'
+				   (close)="confMsg = ''">
+
+			{{confMsg}}
+		</ngb-alert>
+	</div>
+</div>
+<div class="row">
+
+
+	<div class="col-xl-5">
+		<kt-portlet [class]="'kt-portlet--height-fluid'">
+			<kt-portlet-header [title]="'Download database file'">
+			</kt-portlet-header>
+			<kt-portlet-body>
+
+				<span><button
+					class="btn btn-primary mr-3"
+					(click)="download()"
+					[ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': downloading}">Download</button></span>
+
+			</kt-portlet-body>
+		</kt-portlet>
+	</div>
+	<div class="col-xl-5">
+
+		<kt-portlet [class]="'kt-portlet--height-fluid'">
+			<kt-portlet-header [title]="'Upload database file'">
+			</kt-portlet-header>
+			<kt-portlet-body>
+
+				<!--				<div role="progressbar" [style.width.%]="uploadResponse.message" aria-valuemin="0" aria-valuenow="25" aria-valuemax="100">-->
+				<!--					{{uploadResponse.message}}%-->
+				<!--				</div>-->
+
+				<!--				<mat-spinner-->
+				<!--					*ngIf="loading"-->
+				<!--					[color]="'accent'"-->
+				<!--					style="margin:0 auto;"-->
+				<!--					mode="indeterminate"-->
+				<!--				></mat-spinner>-->
+
+				<div class="d-flex justify-content-between">
+					<div class="align-self-center">
+
+						<input type="file" #fileSelected (change)="fileChange($event)" placeholder="Upload file" accept=".sql">
+					</div>
+					<div>
+						<span>
+							<button class="btn btn-primary"
+									*ngIf="!disableUploadBtn"
+									(click)="upload()"
+									[ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': uploading}">Upload</button>
+						</span>
+
+						<span *ngIf="disableUploadBtn"><button mat-raised-button disabled>Upload</button></span>
+
+					</div>
+
+				</div>
+
+
+			</kt-portlet-body>
+		</kt-portlet>
+	</div>
+</div>

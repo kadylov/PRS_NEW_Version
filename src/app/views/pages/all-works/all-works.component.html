@@ -1,0 +1,124 @@
+<div class="row">
+	<div class="col-xl-12">
+		<div class="kt-portlet">
+			<div class="kt-portlet__head">
+				<div class="kt-portlet__head-caption">
+					<div class="kt-portlet__head-title">
+						<span class="kt-portlet__head-icon kt-hide">
+							<i class="la la-gear"></i>
+						</span>
+						<h3 class="kt-portlet__head-text">
+							List Of All Works
+						</h3>
+					</div>
+				</div>
+			</div>
+
+			<div class="kt-portlet__body">
+				<div class="kt-form kt-margin-b-30">
+					<!-- start::FILTERS -->
+					<div class="row align-items-center">
+						<div class="col-md-2 kt-margin-bottom-10-mobile">
+							<mat-form-field>
+								<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+
+				<div perfectScrollbar [ngStyle]="{'max-height': '43vh', 'position': 'relative'}"
+					 class="mat-table__wrapper mat-table__wrapper--dashboard mb-4">
+					<table mat-table [dataSource]="dataSource" matSort>
+
+						<!-- Tag Column -->
+						<ng-container matColumnDef="WID">
+							<th mat-header-cell *matHeaderCellDef mat-sort-header> ID</th>
+							<td mat-cell *matCellDef="let row"> {{row.WID }}</td>
+						</ng-container>
+
+						<!-- Title -->
+						<ng-container matColumnDef="Title">
+
+							<th mat-header-cell *matHeaderCellDef mat-sort-header> Title</th>
+							<td mat-cell *matCellDef="let row">
+
+								<a href="javascript:;">{{row.Title}}</a>
+
+								<!--							<span class="d-flex flex-wrap mdc-chip-set" >-->
+								<!--								<span-->
+								<!--									*ngFor="let tag of row.Tags"-->
+								<!--									class="mdc-chip demo-chip-shaped">-->
+
+								<!--									<span class="mdc-chip__text">{{tag}}</span>-->
+								<!--								</span>-->
+								<!--							</span>-->
+								<!--						</td>-->
+						</ng-container>
+
+						<!-- AuthorName Column -->
+						<ng-container matColumnDef="AuthorName">
+							<th mat-header-cell *matHeaderCellDef mat-sort-header> Author Name(s)</th>
+							<td mat-cell *matCellDef="let row"> {{row.AuthorName}} </td>
+						</ng-container>
+
+						<!-- Status Column -->
+						<ng-container matColumnDef="Status">
+							<th mat-header-cell *matHeaderCellDef mat-sort-header> Status</th>
+							<td mat-cell *matCellDef="let row">
+								<span
+								class='{{getItemCssClassByStatus(row.Status)}}'
+								[matTooltip]="showStatusToolTip(row.Status)"
+								>{{row.Status}}</span></td>
+						</ng-container>
+
+						<!-- Score Column -->
+						<ng-container matColumnDef="ViewSummary">
+							<th mat-header-cell *matHeaderCellDef> Summary</th>
+							<td class="align-self-center" mat-cell *matCellDef="let row">
+								<button mat-raised-button color="accent"
+										[disabled]="row.Status!='scored'
+							 					&& row.Status!='rejected'
+							 					&& row.Status!='accepted'
+												&& row.Status!='denied'"
+
+										(click)="onClick(row)"
+
+
+								>
+
+									<span [matTooltip]="showBtnToolTip(row.Status)">View</span>
+
+								</button>
+							</td>
+						</ng-container>
+
+						<ng-container matColumnDef="Publish">
+							<th mat-header-cell *matHeaderCellDef mat-sort-header> Publish</th>
+							<td mat-cell *matCellDef="let work"> <span>
+						<mat-slide-toggle
+							[checked]="work.Publish =='1'"
+							[disabled]="(work.Status==='rejected' || work.Status==='denied' || work.Status==='assigned')"
+							(change)="slideChanged($event, work)"
+							matTooltip="{{showSliderToolTip(work)}}"
+
+						>
+						</mat-slide-toggle>
+
+
+
+					</span></td>
+						</ng-container>
+
+						<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+						<tr mat-row *matRowDef="let row; columns: displayedColumns;">
+						</tr>
+					</table>
+
+
+				</div>
+				<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="25"></mat-paginator>
+
+			</div>
+		</div>
+	</div>
+</div>

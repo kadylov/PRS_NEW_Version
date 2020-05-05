@@ -1,0 +1,59 @@
+<div class="kt-portlet">
+	<div class="kt-portlet__head">
+		<div class="kt-portlet__head-caption">
+			<div class="kt-portlet__head-title">
+						<span class="kt-portlet__head-icon kt-hide">
+							<i class="la la-gear"></i>
+						</span>
+				<h3 class="kt-portlet__head-text">
+					Completed Reviewers
+				</h3>
+			</div>
+		</div>
+	</div>
+
+	<div class="kt-portlet__body">
+		<div class="border" style="padding: 0 10px; font-weight: 500">
+			<div class="row border-bottom bg-light">
+				<div class="col-sm-1 py-3">ID</div>
+				<div class="col-sm-4 py-3">Title</div>
+				<div class="col-sm-3 pl-5 py-3">Author</div>
+				<div class="col-sm-2 d-flex justify-content-center py-3">Cumulative Score</div>
+				<div class="col-sm-2 py-3">
+					<div class="d-flex justify-content-center">
+						<span class="justify-content-center">
+							Action
+						</span>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="row" *ngIf="scoredWorks$ | async as scoredWorks">
+				<ng-container *ngFor="let w of scoredWorks">
+
+					<div class="col-sm-1 py-3 align-self-center">{{w.WID}}</div>
+					<div class="col-sm-4 py-3 align-self-center">{{w.Title}}</div>
+					<div class="col-sm-3 py-3 pl-5 align-self-center">{{w.AuthorName}}</div>
+					<div class="col-sm-2 py-3 align-self-center">
+						<div class="d-flex justify-content-center">
+							<span class="justify-content-center">
+								{{getCumulativeScore(w)}}
+							</span>
+						</div>
+					</div>
+					<div class="col-sm-2 py-3 align-self-center">
+						<div class="d-flex justify-content-center">
+							<span class="justify-content-center">
+								<a
+									href="javascript:;"
+									(click)="onClick(w)"
+								>View Summary</a>
+							</span>
+						</div>
+					</div>
+				</ng-container>
+			</div>
+		</div>
+	</div>
+</div>

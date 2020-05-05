@@ -1,0 +1,55 @@
+<div class="row">
+	<div class="col-xl-12">
+		<mat-accordion multi="true" *ngIf="reviewInProgress.length>0; else loadingMessage">
+			<mat-expansion-panel
+				*ngFor="let review of reviewInProgress; let i=index;" expanded="{{i==0}}"
+				expanded="{{true}}"
+			>
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						<h5>{{i + 1}}.</h5>
+							<span style="margin-left: 5px">
+
+						<h5>{{review.Title}}</h5></span>
+					</mat-panel-title>
+
+				</mat-expansion-panel-header>
+
+				<assigned-work-table
+					[reviewers]="review.Reviewers"
+					[workID]="review.WID"
+					[showButton]="true"
+					(updatedReviewerList)="updateReviewerList($event, review)"
+				></assigned-work-table>
+
+
+				<div class="mt-4 d-flex justify-content-center">
+					<div class="">
+						<button class=" btn btn-primary" (click)="addReviewer(review)">Add Reviewer</button>
+					</div>
+					<div class="ml-4">
+						<button
+							*ngIf="review.Reviewers"
+							class="btn btn-primary"
+							style="background-color: #6B39B6;"
+							(click)="submitChanges(review)">Submit Changes
+						</button>
+					</div>
+				</div>
+			</mat-expansion-panel>
+
+
+		</mat-accordion>
+	</div>
+</div>
+
+
+<ng-template #loadingMessage>
+	<div class="bg-white d-flex justify-content-center w-100">
+		<div class=" align-self-center my-4 ">
+			<h4>There is no unassigned works</h4>
+		</div>
+
+	</div>
+</ng-template>
+

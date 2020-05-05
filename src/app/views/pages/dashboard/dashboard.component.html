@@ -1,0 +1,204 @@
+<!--<div class="container-fluid bg-white pb-5" style="font-weight: 300; font-size: 15px; color: rgba(21, 21, 21, 0.87)">-->
+
+<!--		<div class="row mb-1">-->
+<!--			<div class="col-sm-1" style="background-color:lavender;">1</div>-->
+<!--			<div class="col-sm-1" style="background-color:lavenderblush;">2</div>-->
+<!--			<div class="col-sm-1" style="background-color:lavender;">3</div>-->
+<!--			<div class="col-sm-1" style="background-color:lavenderblush;">4</div>-->
+<!--			<div class="col-sm-1" style="background-color:lavender;">5</div>-->
+<!--			<div class="col-sm-1" style="background-color:lavenderblush;">6</div>-->
+<!--			<div class="col-sm-1" style="background-color:lavender;">7</div>-->
+<!--			<div class="col-sm-1" style="background-color:lavenderblush;">8</div>-->
+<!--			<div class="col-sm-1" style="background-color:lavender;">9</div>-->
+<!--			<div class="col-sm-1" style="background-color:lavenderblush;">10</div>-->
+<!--			<div class="col-sm-1" style="background-color:lavender;">11</div>-->
+<!--			<div class="col-sm-1" style="background-color:lavenderblush;">12</div>-->
+<!--		</div>-->
+
+<!--</div>-->
+
+<div class="kt-portlet">
+	<div class="kt-portlet__head">
+		<div class="kt-portlet__head-caption">
+			<div class="kt-portlet__head-title">
+						<span class="kt-portlet__head-icon kt-hide">
+							<i class="la la-gear"></i>
+						</span>
+				<h3 class="kt-portlet__head-text">
+					Incoming Works
+				</h3>
+			</div>
+		</div>
+	</div>
+
+	<div class="kt-portlet__body">
+		<div class="border" style="padding: 0 10px; font-weight: 500">
+			<div class="row border-bottom bg-light">
+				<div class="col-sm-1 py-3" >ID</div>
+				<div class="col-sm-4 py-3">Title</div>
+				<div class="col-sm-3 py-3" >Author</div>
+				<div class="col-sm-2 py-3">Date Submitted</div>
+				<div class="col-sm-2 py-3">
+					<div class="d-flex justify-content-center">
+					<span class="justify-content-center">
+						Action
+					</span>
+					</div>
+				</div>
+
+			</div>
+			<div class="row" *ngIf="works$ | async as works; else noWorks">
+				<ng-container *ngFor="let w of works">
+					<div class="col-sm-1 py-3 align-self-center">{{w.WID}}</div>
+					<div class="col-sm-4 py-3 align-self-center">{{w.Title}}
+						<!--				<span class="mdc-chip-set">-->
+						<!--					<span *ngFor="let tag of w.Tags"-->
+						<!--						  class="mdc-chip demo-chip-shaped">-->
+						<!--								<span class="mdc-chip__text">{{tag}}</span>-->
+						<!--					</span>-->
+						<!--				</span>-->
+					</div>
+					<div class="col-sm-3 py-3 align-self-center">{{w.AuthorName}}</div>
+					<div class="col-sm-2 py-3 align-self-center">{{w.DateSubmission}}</div>
+					<div class="col-sm-2 py-3 align-self-center">
+						<div class="d-flex justify-content-center">
+					<span>
+						<button mat-button color="primary" (click)="onClick(w)">Review</button>
+					</span>
+						</div>
+					</div>
+				</ng-container>
+			</div>
+		</div>
+	</div>
+</div>
+<ng-template #noWorks>
+	<h4 class="text-center my-5">There is no incoming works for pre review.</h4>
+</ng-template>
+
+<!--<div class="kt-portlet">-->
+<!--	<div class="kt-portlet__head">-->
+<!--		<div class="kt-portlet__head-caption">-->
+<!--			<div class="kt-portlet__head-title">-->
+<!--						<span class="kt-portlet__head-icon kt-hide">-->
+<!--							<i class="la la-gear"></i>-->
+<!--						</span>-->
+<!--				<h3 class="kt-portlet__head-text">-->
+<!--					Summary-->
+<!--				</h3>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+
+<!--	<div class="kt-portlet__body">-->
+<!--		<work-summary [wid]="'30'"></work-summary>-->
+<!--	</div>-->
+<!--</div>-->
+
+
+<!--				<div class="row mt-3">-->
+<!--					<div class="col-sm-2" style="background-color:lavender;">1</div>-->
+<!--					<div class="col-sm-2" style="background-color:lavenderblush;">2</div>-->
+<!--					<div class="col-sm-2" style="background-color:lavender;">3</div>-->
+<!--					<div class="col-sm-2" style="background-color:lavenderblush;">4</div>-->
+<!--					<div class="col-sm-2" style="background-color:lavender;">5</div>-->
+<!--					<div class="col-sm-2" style="background-color:lavenderblush;">6</div>-->
+<!--				</div>-->
+
+<!--				<div class="row mt-3">-->
+<!--					<div class="col-sm-3" style="background-color:lavender;">1</div>-->
+<!--					<div class="col-sm-3" style="background-color:lavenderblush;">2</div>-->
+<!--					<div class="col-sm-3" style="background-color:lavender;">3</div>-->
+<!--					<div class="col-sm-3" style="background-color:lavenderblush;">4</div>-->
+<!--				</div>-->
+<!--				<div class="row mt-3">-->
+<!--					<div class="col-sm-4" style="background-color:lavender;">1</div>-->
+<!--					<div class="col-sm-4" style="background-color:lavenderblush;">2</div>-->
+<!--					<div class="col-sm-4" style="background-color:lavender;">3</div>-->
+<!--				</div>-->
+<!--				<div class="row mt-3">-->
+<!--					<div class="col-sm-6" style="background-color:lavender;">1</div>-->
+<!--					<div class="col-sm-6" style="background-color:lavenderblush;">2</div>-->
+<!--				</div>-->
+
+
+<!--				<div perfectScrollbar [ngStyle]="{'max-height': '43vh', 'position': 'relative'}"-->
+<!--					 class="mat-table__wrapper mat-table__wrapper&#45;&#45;dashboard mb-4">-->
+
+<!--					<table mat-table [dataSource]="dataSource" matSort>-->
+
+<!--						&lt;!&ndash; WID Column &ndash;&gt;-->
+<!--						<ng-container matColumnDef="WID">-->
+<!--							<th mat-header-cell *matHeaderCellDef mat-sort-header> ID</th>-->
+<!--							<td mat-cell *matCellDef="let row"> {{row.WID }}</td>-->
+<!--						</ng-container>-->
+
+<!--						&lt;!&ndash; Title &ndash;&gt;-->
+<!--						<ng-container matColumnDef="Title">-->
+
+<!--							<th mat-header-cell *matHeaderCellDef mat-sort-header> Title</th>-->
+<!--							<td mat-cell *matCellDef="let row">-->
+<!--								<a href="javascript:;">{{row.Title}}</a>-->
+
+<!--								<span class="mdc-chip-set">-->
+<!--							<span *ngFor="let tag of row.Tags | slice:1"-->
+<!--								  class="mdc-chip demo-chip-shaped"-->
+<!--							>-->
+<!--								<span class="mdc-chip__text">{{tag}}</span></span>-->
+<!--						</span>-->
+
+<!--							</td>-->
+
+<!--						</ng-container>-->
+
+<!--						&lt;!&ndash; DateSubmission &ndash;&gt;-->
+<!--						<ng-container matColumnDef="DateSubmission">-->
+<!--							<th mat-header-cell *matHeaderCellDef mat-sort-header> Date Submission</th>-->
+<!--							<td mat-cell *matCellDef="let row"> {{row.DateSubmission }}</td>-->
+<!--						</ng-container>-->
+
+<!--						&lt;!&ndash; DateWritten &ndash;&gt;-->
+<!--						<ng-container matColumnDef="DateWritten">-->
+<!--							<th mat-header-cell *matHeaderCellDef mat-sort-header> Date Written</th>-->
+<!--							<td mat-cell *matCellDef="let row"> {{row.DateWritten }}</td>-->
+<!--						</ng-container>-->
+
+<!--						&lt;!&ndash; AuthorName Column &ndash;&gt;-->
+<!--						<ng-container matColumnDef="AuthorName">-->
+<!--							<th mat-header-cell *matHeaderCellDef mat-sort-header> Author-->
+<!--								Name(s)-->
+<!--							</th>-->
+<!--							<td mat-cell *matCellDef="let row"> {{row.AuthorName}} </td>-->
+<!--						</ng-container>-->
+
+<!--						&lt;!&ndash; AuthorEmail Column &ndash;&gt;-->
+<!--						<ng-container matColumnDef="AuthorEmail">-->
+<!--							<th mat-header-cell *matHeaderCellDef mat-sort-header> Author Email-->
+<!--							</th>-->
+<!--							<td mat-cell *matCellDef="let row"> {{row.AuthorEmail}} </td>-->
+<!--						</ng-container>-->
+
+<!--						<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->
+<!--						<tr mat-row *matRowDef="let row; columns: displayedColumns;">-->
+<!--						</tr>-->
+<!--					</table>-->
+
+
+<!--					<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>-->
+<!--				</div>-->
+
+
+<!--<div class="row">-->
+<!--	<div class="col-xl-12">-->
+<!--		<kt-portlet [class]="'kt-portlet&#45;&#45;height-fluid'">-->
+<!--			<kt-portlet-header [title]="'Top 3 Reviewed Works'">-->
+<!--				<ng-container ktPortletTools>-->
+<!--					<kt-context-menu2></kt-context-menu2>-->
+<!--				</ng-container>-->
+<!--			</kt-portlet-header>-->
+<!--			<kt-portlet-body>-->
+<!--				<kt-widget5></kt-widget5>-->
+<!--			</kt-portlet-body>-->
+<!--		</kt-portlet>-->
+<!--	</div>-->
+<!--</div>-->
