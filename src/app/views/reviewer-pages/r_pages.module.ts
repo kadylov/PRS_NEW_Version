@@ -14,7 +14,15 @@ import {ReviewerBaseComponent} from '../theme/reviewer-base/reviewer-base.compon
 import {R_DashboardComponent} from './dashboard/r_dashboard.component';
 import {ThemeModule} from '../theme/theme.module';
 import {ReviewerService} from '../../core/reviewer/_services/reviewer.service';
-import {MatButtonModule, MatIconModule, MatInputModule, MatPaginatorModule, MatSortModule, MatTableModule} from '@angular/material';
+import {
+	MatButtonModule,
+	MatIconModule,
+	MatInputModule,
+	MatPaginatorModule, MatProgressSpinnerModule, MatSliderModule,
+	MatSortModule,
+	MatTableModule,
+	MatTooltipModule
+} from '@angular/material';
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {StoreModule} from '@ngrx/store';
 
@@ -28,6 +36,7 @@ import {DiscussionComponent} from './discussion/discussion.component';
 import {MessageEffects} from '../../core/reviewer/_effects/message.effects';
 import {AuthGuard, Role} from '../../core/auth';
 import {ErrorPageComponent} from '../theme/content/error-page/error-page.component';
+import {InProgressComponent} from './assignment/in-progress/in-progress.component';
 
 
 const routes: Routes = [
@@ -70,6 +79,14 @@ const routes: Routes = [
 				data: { roles: [Role.Reviewer, Role.LeadReviewer] }
 
 			},
+
+			{
+				path: 'in-progress',
+				component: InProgressComponent,
+				canActivate: [AuthGuard],
+				data: { roles: [Role.Reviewer] }
+			},
+
 		]
 	}
 ];
@@ -81,6 +98,7 @@ const routes: Routes = [
 		R_DashboardComponent,
 		AssignmentComponent,
 		DiscussionComponent,
+		InProgressComponent
 	],
 
 
@@ -108,6 +126,9 @@ const routes: Routes = [
 		EffectsModule.forFeature([ReviewHistoryEffects, AssignmentEffects, MessageEffects]),
 		MatButtonModule,
 		MatIconModule,
+		MatTooltipModule,
+		MatSliderModule,
+		MatProgressSpinnerModule,
 	],
 
 	providers: [

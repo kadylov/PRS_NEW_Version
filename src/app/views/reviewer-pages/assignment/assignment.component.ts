@@ -72,12 +72,9 @@ export class AssignmentComponent implements OnInit, OnDestroy {
 
 	viewAssignment(work: any) {
 
-		console.log("AAAA")
-		console.log('WOrk', work);
-
 		sessionStorage.setItem('assignment', JSON.stringify(work));
 
-		this.router.navigateByUrl('/reviewer/assignment');
+		this.router.navigateByUrl('/reviewer/in-progress');
 
 	}
 }

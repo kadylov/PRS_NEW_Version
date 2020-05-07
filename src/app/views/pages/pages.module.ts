@@ -12,9 +12,6 @@ import { UserManagementModule } from './user-management/user-management.module';
 import { IncomingWorkComponent } from './admin/incoming-work/incoming-work.component';
 import { AssignmentComponent } from './admin/assignment/assignment.component';
 import { ScorecardComponent } from './admin/scorecard/scorecard.component';
-import { InProgressComponent } from './admin/in-progress/in-progress.component';
-
-
 
 import {
     MatButtonModule, MatDatepickerModule, MatDialogModule,
@@ -48,6 +45,7 @@ import {WorkSummaryComponent} from './work-summary/work-summary.component';
 import {CompletedReviewComponent} from './completed-review/completed-review.component';
 import {SummaryViewComponent} from './completed-review/summary-view/summary-view.component';
 import {AuthGuard, Role} from '../../core/auth';
+import {ReviewerService} from '../../core/reviewer/_services/reviewer.service';
 
 const routes:Routes=[
 	{
@@ -90,12 +88,7 @@ const routes:Routes=[
 			// 	path: 'result',
 			// 	component: ResultComponent
 			// },
-			{
-				path: 'in-progress',
-				component: InProgressComponent,
-				canActivate: [AuthGuard],
-				data: { roles: [Role.Admin] }
-			},
+
 			{
 				path: 'review-in-progress',
 				component: ReviewInProgressComponent,
@@ -156,7 +149,6 @@ const routes:Routes=[
 		IncomingWorkComponent,
 		AssignmentComponent,
 		ScorecardComponent,
-		InProgressComponent,
 		CompletedReviewComponent,
 		IncomingDatatable,
 		ReviewInProgressComponent,
@@ -209,7 +201,7 @@ const routes:Routes=[
 	providers: [
 		DatePipe,
 		LayoutUtilsService,
-		AuthGuard
+		AuthGuard,
 	],
 
 })

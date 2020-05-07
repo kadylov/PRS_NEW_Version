@@ -13,7 +13,8 @@
 			<div class="form-group">
 				<mat-form-field>
 					<input matInput type="username" placeholder="username"
-						   formControlName="username" autocomplete="off"/>
+						   formControlName="username" autocomplete="off"
+					/>
 					<mat-error *ngIf="isControlHasError('username','required')">
 						<strong>{{ 'AUTH.VALIDATION.REQUIRED_FIELD' | translate }}</strong>
 					</mat-error>
@@ -31,7 +32,8 @@
 			<div class="form-group">
 				<mat-form-field>
 					<input matInput type="password" placeholder="password"
-						   formControlName="password" autocomplete="off"/>
+						   formControlName="password" autocomplete="off"
+					/>
 					<mat-error *ngIf="isControlHasError('password','required')">
 						<strong>{{ 'AUTH.VALIDATION.REQUIRED_FIELD' | translate }}</strong>
 					</mat-error>

@@ -2,7 +2,6 @@
 import { AuthActions, AuthActionTypes } from '../_actions/auth.actions';
 // Models
 import {User1} from '../_models/user1.model';
-import {User} from '../../../../../../demo1/src/app/core/auth';
 
 export interface AuthState {
     loggedIn: boolean;

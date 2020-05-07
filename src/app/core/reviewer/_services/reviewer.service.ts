@@ -76,5 +76,28 @@ export class ReviewerService {
 		return this.http.post<any>(API_REVIEWER_URL, body, {headers: headers});
 	}
 
+	sendScores(WID, reviewerID, q1Value,q2Value,q3Value,q4Value,q5Value,q6Value,q7Value,q8Value,q9Value,q10Value,q11Value,q12Value,cValue){
+		console.log('CCCCCCCCC', cValue);
+		const body = new HttpParams()
+			.set(`saveScorecard`, 'saveScorecard')
+			.set(`WID`,WID)
+			.set(`ReviewerID`,reviewerID.toString())
+			.set(`q1Value`,q1Value)
+			.set(`q2Value`,q2Value)
+			.set(`q3Value`,q3Value)
+			.set(`q4Value`,q4Value)
+			.set(`q5Value`,q5Value)
+			.set(`q6Value`,q6Value)
+			.set(`q7Value`,q7Value)
+			.set(`q8Value`,q8Value)
+			.set(`q9Value`,q9Value)
+			.set(`q10Value`,q10Value)
+			.set(`q11Value`,q11Value)
+			.set(`q12Value`,q12Value)
+			.set(`totalScore`,cValue)
+
+		return this.http.post<any>(API_REVIEWER_URL, body, {headers: headers});
+	}
+
 
 }

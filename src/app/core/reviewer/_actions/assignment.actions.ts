@@ -5,6 +5,7 @@ export enum AssignmentActionTypes {
 
 	AssignmentsRequested = '[Reviewer] Assignments Requested',
 	AssignmentsLoaded = '[Reviewer] Assignments Loaded',
+	AssignmentCompleted = '[Reviewer] Assignment Completed',
 
 	AssignmentHistoryRequested = '[Reviewer] Assignment History Requested',
 	AssignmentHistoryLoaded = '[Reviewer] Assignment History Loaded',
@@ -24,6 +25,13 @@ export class AssignmentLoaded implements Action {
 	}
 }
 
+export class AssignmentCompleted implements Action {
+	readonly type = AssignmentActionTypes.AssignmentCompleted;
+
+	constructor(public payload: number) {
+	}
+}
+
 export class AssignmentHistoryRequested implements Action {
 	readonly type = AssignmentActionTypes.AssignmentHistoryRequested;
 
@@ -39,8 +47,10 @@ export class AssignmentHistoryLoaded implements Action {
 }
 
 export type AssignmentActions =
-	 AssignmentRequested
+	AssignmentRequested
 	| AssignmentLoaded
+	| AssignmentCompleted
 	| AssignmentHistoryRequested
 	| AssignmentHistoryLoaded
+
 
