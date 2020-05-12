@@ -1,10 +1,13 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {ReviewerService} from '../../../../core/reviewer/_services/reviewer.service';
 import {Subscription} from 'rxjs';
-import {Work} from '../../../author/model/work';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {Router} from '@angular/router';
 import {User1} from '../../../../core/auth/_models/user1.model';
+import {Location} from '@angular/common';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {MatDialog, MatIconRegistry} from '@angular/material';
+import {DiscussionComponent} from '../../discussion/discussion.component';
 
 
 @Component({
@@ -34,19 +37,39 @@ export class InProgressComponent implements OnInit, OnDestroy {
 	loading: boolean = true;
 	isFullscreen: boolean = false;
 	subscription: Subscription[] = [];
-	assignment = null;
+	assignment:any = null;
 	safeUrl: SafeUrl;
+	canScore: boolean = true;
+
+	modal:boolean = false;
+
+	workID: number;
+
+	closeResult: string;
+
 
 	constructor(
 		private sanitizer: DomSanitizer,
 		private router: Router,
+		private location: Location,
+		private modalService: NgbModal,
+		iconRegistry: MatIconRegistry,
+		public dialog: MatDialog,
 		private reviewerService: ReviewerService
 	) {
+		iconRegistry.addSvgIcon('chat1',
+			sanitizer.bypassSecurityTrustResourceUrl('./assets/media/icons/svg/Communication/Chat_1.svg'));
 	}
 
 	ngOnInit() {
 		this.assignment = JSON.parse(sessionStorage.getItem('assignment'));
-		this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.assignment.URL);
+		if (this.assignment) {
+			this.workID = this.assignment['WorkID'];
+
+			this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.assignment.URL);
+		} else {
+			this.loadScoredAssigment();
+		}
 
 	}
 
@@ -83,6 +106,32 @@ export class InProgressComponent implements OnInit, OnDestroy {
 		return user.id;
 	}
 
+	loadScoredAssigment() {
+		const scorecard = JSON.parse(sessionStorage.getItem('scorecard'));
+		this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(scorecard.URL);
+
+		this.workID = scorecard['WorkID'];
+
+		const scores = scorecard['Scorecard'];
+		if (scores) {
+			this.q1Value = +scores['1'];
+			this.q2Value = +scores['2'];
+			this.q3Value = +scores['3'];
+			this.q4Value = +scores['4'];
+			this.q5Value = +scores['5'];
+			this.q6Value = +scores['6'];
+			this.q7Value = +scores['7'];
+			this.q8Value = +scores['8'];
+			this.q9Value = +scores['9'];
+			this.q10Value = +scores['10'];
+			this.q11Value = +scores['11'];
+			this.q12Value = +scores['12'];
+			this.cValue = this.q1Value + this.q2Value + this.q3Value + this.q4Value + this.q5Value + this.q6Value + this.q7Value + this.q8Value + this.q9Value + this.q10Value + this.q11Value + this.q12Value;
+		}
+
+		this.canScore = false;
+	}
+
 
 	exitFromFullScreen() {
 		this.isFullscreen = false;
@@ -98,6 +147,22 @@ export class InProgressComponent implements OnInit, OnDestroy {
 		if (elem.requestFullscreen) {
 			elem.requestFullscreen();
 		}
+	}
+
+	returnToPrevPage() {
+		sessionStorage.removeItem('scorecard');
+		this.location.back();
+	}
+
+
+	openDiscussionDialogBox(){
+		const dialogRef = this.dialog.open(DiscussionComponent, {
+			panelClass: 'discussion-dialog-container',
+			data: {
+				'workID': this.workID,
+				'canWrite': this.canScore
+			},
+		});
 	}
 
 }

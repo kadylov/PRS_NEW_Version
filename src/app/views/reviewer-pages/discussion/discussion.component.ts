@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, OnInit, Optional, Output} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {MessagesRequested, NewMessageCreated} from '../../../core/reviewer/_actions/message.actions';
 import * as fromReviewer from '../../../core/reviewer/_reducers';
@@ -6,19 +6,22 @@ import {Observable} from 'rxjs';
 import {Message} from '../../../core/reviewer/_models/message.model';
 import {DatePipe} from '@angular/common';
 import {User1} from '../../../core/auth/_models/user1.model';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 
 @Component({
 		selector: 'kt-discussion',
 		templateUrl: './discussion.component.html',
-		styleUrls: ['./discussion.component.scss']
+		styleUrls: ['./discussion.component.scss'],
+		changeDetection: ChangeDetectionStrategy.OnPush
 
 	}
 )
 export class DiscussionComponent implements OnInit {
 
 	@Input() title: string = 'Discussion';
-	@Output() close = new EventEmitter<void>();
+	@Input() workID: number;
+	@Output() close1 = new EventEmitter<void>();
 
 
 	messages$: Observable<Message[]>;
@@ -28,15 +31,18 @@ export class DiscussionComponent implements OnInit {
 
 	constructor(
 		private store: Store<fromReviewer.ReviewerState>,
+		private dialogRef: MatDialogRef<DiscussionComponent>,
+		@Optional() @Inject(MAT_DIALOG_DATA) public data: any,
 		private datepipe: DatePipe,
 	) {
 
+		this.workID = data.workID;
 
 	}
 
 
 	ngOnInit(): void {
-		this.store.dispatch(new MessagesRequested(4));
+		this.store.dispatch(new MessagesRequested(this.workID));
 		this.loadDiscussionHistory();
 
 		this.reviewer = JSON.parse(sessionStorage.getItem('user'));
@@ -56,9 +62,13 @@ export class DiscussionComponent implements OnInit {
 			ReviewerName: this.reviewer.fullname,
 			Message: msg,
 			DTime: this.datepipe.transform(new Date(Date.now()), 'yyyy-MM-dd HH:mm:ss'),
-			WorkID: 4
+			WorkID: this.workID
 		};
 
 		this.store.dispatch(new NewMessageCreated(newMessage));
+	}
+
+	close() {
+		this.dialogRef.close({event: 'close', data: 'close'});
 	}
 }

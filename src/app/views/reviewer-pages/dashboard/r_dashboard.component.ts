@@ -13,30 +13,9 @@ import {DomSanitizer} from '@angular/platform-browser';
 })
 export class R_DashboardComponent implements OnInit {
 
-	modal = false;
-
-
-	constructor(private layoutConfigService: LayoutConfigService,
-				private modalService: NgbModal,
-				private resolver: ComponentFactoryResolver,
-				iconRegistry: MatIconRegistry,
-				sanitizer: DomSanitizer,
-
-
-				// delete later
-	) {
-
-		iconRegistry.addSvgIcon('chat1',
-			sanitizer.bypassSecurityTrustResourceUrl('./assets/media/icons/svg/Communication/Chat_1.svg'));
+	constructor() {
 	}
 
 	ngOnInit(): void {
 	}
-
-
-	public testvar = [];
-
-	test() {
-	}
-
 }

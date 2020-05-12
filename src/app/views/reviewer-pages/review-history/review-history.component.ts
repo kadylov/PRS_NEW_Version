@@ -6,6 +6,7 @@ import {Observable, Subscription} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {ReviewHistoryRequested} from '../../../core/reviewer/_actions/review-history.actions';
 import * as fromReviewer from '../../../core/reviewer/_reducers/';
+import {Router} from '@angular/router';
 
 @Component({
 	selector: 'kt-review-history',
@@ -24,7 +25,9 @@ export class ReviewHistoryComponent implements OnInit, OnDestroy {
 	private subscriptions: Subscription[] = [];
 
 	constructor(
-		private store: Store<fromReviewer.ReviewerState>////////////////////////////////////////////////
+		private store: Store<fromReviewer.ReviewerState>,
+		private router:Router,
+		private reviewerService: ReviewerService
 	) {
 		this.dataSource = new MatTableDataSource<ReviewHistory>();
 	}
@@ -55,54 +58,19 @@ export class ReviewHistoryComponent implements OnInit, OnDestroy {
 				let subc$ = this.store.select(fromReviewer.getAllHistory)
 				.subscribe(res => {
 					this.dataSource.data = res;
-					// console.log(res);
 				});
 
 				this.subscriptions.push(subc$);
 			}
 		});
-
-
-
-		// this.reviewHistory$=this.store.pipe(select('reviewHistory1'));
-		// this.store.pipe(select('reviewHistory1')).subscribe(
-		// 	res=>{
-		// 		console.log("RES ",res);
-		//
-		// 	}
-		// );
-
-
-		// this.reviewHistory$.subscribe(res => {
-		//
-		// 		console.log("RES ",res);
-		// 		// this.dataSource.data = res;
-		// 		this.dataSource.sort = this.sort;
-		// 		this.dataSource.paginator = this.paginator;
-		// 	},
-		// 	error => {
-		// 		console.log('There was an error while retrieving review history !!!' + error);
-		// 	}
-		// );
-
-
-		// this.dataSource.data = this.reviewHistory$.reviewHistory;
-
-
-		// this.reviewerService.getAllReviews()
-		// 	.subscribe(res => {
-		// 			this.dataSource.data = res;
-		// 			this.dataSource.sort = this.sort;
-		// 			this.dataSource.paginator = this.paginator;
-		// 		},
-		// 		error => {
-		// 			console.log('There was an error while retrieving review history !!!' + error);
-		// 		}
-		// 	);
 	}
 
-
-	applyFilter(value: any) {
-
+	viewScorecard(work: any) {
+		const subsc = this.reviewerService.getScorecard(work.WID, work.RID).subscribe(
+			scorecard=>{
+				sessionStorage.setItem('scorecard', JSON.stringify(scorecard));
+				this.router.navigateByUrl('reviewer/in-progress');
+			}
+		);
 	}
 }

@@ -49,3 +49,11 @@
 	position: static;
 }
 
+.discussion-dialog-container .mat-dialog-container {
+	padding: 0;
+	border-radius: 10px 10px;
+	overflow: hidden;
+	max-height: 736px;
+
+}
+

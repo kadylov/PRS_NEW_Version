@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 import {User1} from '../../auth/_models/user1.model';
 import {catchError, map} from 'rxjs/operators';
 import {ReviewHistory} from '../_models/review-history.model';
@@ -9,6 +9,7 @@ import {DataTableWorkModel} from '../../_base/layout';
 import {Message} from '../_models/message.model';
 import {Work} from '../../../views/author/model/work';
 import {environment} from '../../../../environments/environment';
+import {error} from '@angular/compiler/src/util';
 
 
 const API_REVIEWER_URL = environment.baseUrl + 'reviewer_request.php';
@@ -59,45 +60,77 @@ export class ReviewerService {
 				getDiscussions: 'getDiscussions',
 				WorkID: workID.toString()
 			}
-		});
+		}).pipe(
+
+			map(res=>{
+				if (res==null) {
+					return [];
+				}else return res;
+			}),
+
+			catchError(err => {
+				return throwError(err);
+			})
+
+		);
 	}
 
 	postNewMessage(message: Message): Observable<any> {
 		//WorkID, ReviewerID, Message, DTime
+		console.log("New msg:",message)
 		const body = new HttpParams()
 			.set(`postNewMessage`, 'postNewMessage')
 			.set(`WorkID`, message.WorkID.toString())
 			.set(`ReviewerID`, message.ReviewerID.toString())
 			.set(`Message`, message.Message)
 			.set(`DTime`, message.DTime);
-		// return this.http.post<Work>(api, body, {headers: headers});
-
-
 		return this.http.post<any>(API_REVIEWER_URL, body, {headers: headers});
 	}
 
-	sendScores(WID, reviewerID, q1Value,q2Value,q3Value,q4Value,q5Value,q6Value,q7Value,q8Value,q9Value,q10Value,q11Value,q12Value,cValue){
-		console.log('CCCCCCCCC', cValue);
+	// sends scores from the
+	sendScores(WID, reviewerID, q1Value, q2Value, q3Value, q4Value, q5Value, q6Value, q7Value, q8Value, q9Value, q10Value, q11Value, q12Value, cValue) {
 		const body = new HttpParams()
 			.set(`saveScorecard`, 'saveScorecard')
-			.set(`WID`,WID)
-			.set(`ReviewerID`,reviewerID.toString())
-			.set(`q1Value`,q1Value)
-			.set(`q2Value`,q2Value)
-			.set(`q3Value`,q3Value)
-			.set(`q4Value`,q4Value)
-			.set(`q5Value`,q5Value)
-			.set(`q6Value`,q6Value)
-			.set(`q7Value`,q7Value)
-			.set(`q8Value`,q8Value)
-			.set(`q9Value`,q9Value)
-			.set(`q10Value`,q10Value)
-			.set(`q11Value`,q11Value)
-			.set(`q12Value`,q12Value)
-			.set(`totalScore`,cValue)
+			.set(`WID`, WID)
+			.set(`ReviewerID`, reviewerID.toString())
+			.set(`q1Value`, q1Value)
+			.set(`q2Value`, q2Value)
+			.set(`q3Value`, q3Value)
+			.set(`q4Value`, q4Value)
+			.set(`q5Value`, q5Value)
+			.set(`q6Value`, q6Value)
+			.set(`q7Value`, q7Value)
+			.set(`q8Value`, q8Value)
+			.set(`q9Value`, q9Value)
+			.set(`q10Value`, q10Value)
+			.set(`q11Value`, q11Value)
+			.set(`q12Value`, q12Value)
+			.set(`totalScore`, cValue);
 
 		return this.http.post<any>(API_REVIEWER_URL, body, {headers: headers});
 	}
 
 
+	getScorecard(wid: number, reviewerID: number): Observable<any> {
+		return this.http.get<any>(API_REVIEWER_URL, {
+			params: {
+				getScorecardForWork: 'any',
+				WID: wid.toString(),
+				ReviewerID: reviewerID.toString()
+			}
+		})
+			.pipe(
+				map(res => {
+					if (res) {
+						return res[0];
+					} else {
+						return null;
+					}
+				}),
+
+				catchError(err => {
+					return throwError(err);
+				})
+			);
+	}
 }

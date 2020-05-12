@@ -131,7 +131,7 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 	}
 
 	private createWorkStatusEmail(): Email {
-		let decicion: string = 'has been admitted for further review';
+		let decicion: string = 'has been submitted for further review';
 
 		if (this.decision.value == 'denied') {
 			decicion = 'has not been accepted. Please try again to submit the work when it is improved. <br><br>' +

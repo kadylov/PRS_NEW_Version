@@ -101,6 +101,8 @@ const routes: Routes = [
 		InProgressComponent
 	],
 
+	entryComponents: [DiscussionComponent],
+
 
 	exports: [
 		// DiscussionComponent

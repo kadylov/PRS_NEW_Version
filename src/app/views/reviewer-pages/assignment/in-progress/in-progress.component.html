@@ -1,35 +1,4 @@
 <div class="row">
-<!--	<div class="col-lg-6">-->
-<!--		<div class="kt-portlet">-->
-<!--			<div class="kt-portlet__head">-->
-<!--				<div class="kt-portlet__head-caption">-->
-<!--					<div class="kt-portlet__head-title">-->
-<!--						<span class="kt-portlet__head-icon kt-hide">-->
-<!--							<i class="la la-gear"></i>-->
-<!--						</span>-->
-<!--						<h3 class="kt-portlet__head-text">-->
-<!--							Review Material-->
-<!--						</h3>-->
-<!--					</div>-->
-<!--				</div>-->
-<!--			</div>-->
-<!--			&lt;!&ndash;begin::Form&ndash;&gt;-->
-<!--			<form class="kt-form">-->
-<!--				<div class="kt-portlet__body">-->
-<!--					<div class="kt-form__section kt-form__section&#45;&#45;first">-->
-<!--						<iframe #frameElement [src]="safeUrl" (loadstart)="loading=true" (load)="loading=false"-->
-<!--								style="width:100%; height:1000px;"></iframe>-->
-<!--						​-->
-<!--						​-->
-<!--					</div>-->
-<!--				</div>-->
-<!--				​-->
-<!--			</form>-->
-<!--			&lt;!&ndash;end::Form&ndash;&gt;-->
-<!--		</div>-->
-<!--		​-->
-<!--		​-->
-<!--	</div>-->
 
 	<div class="col-lg-6" id="myDiv">
 		<div class="kt-portlet">
@@ -72,8 +41,6 @@
 	</div>
 
 
-
-
 	<div class="col-lg-6">
 		<div class="kt-portlet">
 			<div class="kt-portlet__head">
@@ -92,47 +59,62 @@
 				<div class="kt-portlet__body">
 					<div class="kt-form__section kt-form__section--first">
 
-
-						​
 						<div class="kt-form__heading">
 							<h3 class="kt-form__heading-title">Quality of Content: Reinforces Barcelona Princibles</h3>
 						</div>
 						<div class="kt-form__group form-group">
-							<label>1. Goal Setting and Measurement are Fundemental to Communication and Public Relations</label>
+							<label>1. Goal Setting and Measurement are Fundemental to Communication and Public
+								Relations</label>
 
-
-								<mat-slider (change)="changeSlider()" [(ngModel)]="q1Value"name="q1" min="0" max="5" step="1" thumbLabel tickInterval="1"></mat-slider>
-								<span *ngIf="q1Value">Score: {{ q1Value }}/5</span>
+							<mat-slider [disabled]="canScore===false" (change)="changeSlider()" [(ngModel)]="q1Value"
+										name="q1" min="0" max="5" step="1" thumbLabel tickInterval="1"></mat-slider>
+							<span *ngIf="q1Value">Score: {{ q1Value }}/5</span>
 
 							<p></p>
-							<label>2. Measuring Commincation Outcomes is Recommended Versus Only Measuring Outputs</label>
+							<label>2. Measuring Commincation Outcomes is Recommended Versus Only Measuring
+								Outputs</label>
 							<p>
-								<mat-slider (change)="changeSlider()" [(ngModel)]="q2Value"name="q2" min="0" max="5" step="1" thumbLabel tickInterval="1"></mat-slider>
+								<mat-slider [disabled]="canScore===false" (change)="changeSlider()"
+											[(ngModel)]="q2Value" name="q2" min="0" max="5" step="1" thumbLabel
+											tickInterval="1"></mat-slider>
 								<span *ngIf="q2Value">Score: {{ q2Value }}/5</span>
 							</p>
-							<label >3. The Effect on Organizational Performance Can and Should Be Measured Where Possible</label>
+							<label>3. The Effect on Organizational Performance Can and Should Be Measured Where
+								Possible</label>
 							<p>
-								<mat-slider (change)="changeSlider()" [(ngModel)]="q3Value"name="q3" min="0" max="5" step="1" thumbLabel tickInterval="1"></mat-slider>
+								<mat-slider [disabled]="canScore===false" (change)="changeSlider()"
+											[(ngModel)]="q3Value" name="q3" min="0" max="5" step="1" thumbLabel
+											tickInterval="1"></mat-slider>
 								<span *ngIf="q3Value">Score: {{ q3Value }}/5</span>
 							</p>
 							<label>4. Measurement and Evaluation Require Both Qualitive and Quantitive Methods</label>
 							<p>
-								<mat-slider (change)="changeSlider()" [(ngModel)]="q4Value"name="q4" min="0" max="5" step="1" thumbLabel tickInterval="1"></mat-slider>
+								<mat-slider [disabled]="canScore===false" (change)="changeSlider()"
+											[(ngModel)]="q4Value" name="q4" min="0" max="5" step="1" thumbLabel
+											tickInterval="1"></mat-slider>
 								<span *ngIf="q4Value">Score: {{ q4Value }}/5</span>
 							</p>
-							<label >5. AVEs are not the Value of Communication</label>
+							<label>5. AVEs are not the Value of Communication</label>
 							<p>
-								<mat-slider (change)="changeSlider()" [(ngModel)]="q5Value"name="q5" min="0" max="5" step="1" thumbLabel tickInterval="1"></mat-slider>
+								<mat-slider [disabled]="canScore===false" (change)="changeSlider()"
+											[(ngModel)]="q5Value" name="q5" min="0" max="5" step="1" thumbLabel
+											tickInterval="1"></mat-slider>
 								<span *ngIf="q5Value">Score: {{ q5Value }}/5</span>
 							</p>
-							<label>6. Social Media Can and Should be Measured Consistantly with Other Media Channels</label>
+							<label>6. Social Media Can and Should be Measured Consistantly with Other Media
+								Channels</label>
 							<p>
-								<mat-slider (change)="changeSlider()" [(ngModel)]="q6Value"name="q6" min="0" max="5" step="1" thumbLabel tickInterval="1"></mat-slider>
+								<mat-slider [disabled]="canScore===false" (change)="changeSlider()"
+											[(ngModel)]="q6Value" name="q6" min="0" max="5" step="1" thumbLabel
+											tickInterval="1"></mat-slider>
 								<span *ngIf="q6Value">Score: {{ q6Value }}/5</span>
 							</p>
+
 							<label>7. Measurement and Evaluation Should be Transparent, Consistant and Valid</label>
 							<p>
-								<mat-slider (change)="changeSlider()" [(ngModel)]="q7Value"name="q7" min="0" max="5" step="1" thumbLabel tickInterval="1"></mat-slider>
+								<mat-slider [disabled]="canScore===false" (change)="changeSlider()"
+											[(ngModel)]="q7Value" name="q7" min="0" max="5" step="1" thumbLabel
+											tickInterval="1"></mat-slider>
 								<span *ngIf="q7Value">Score: {{ q7Value }}/5</span>
 							</p>
 							<div class="kt-form__heading">
@@ -141,30 +123,39 @@
 							</div>
 							<label>8. Adds to or Advances The Body of Knowledge</label>
 							<p>
-								<mat-slider (change)="changeSlider()" [(ngModel)]="q8Value"name="q8" min="1" max="4" step="1" thumbLabel tickInterval="1"></mat-slider>
+								<mat-slider [disabled]="canScore===false" (change)="changeSlider()"
+											[(ngModel)]="q8Value" name="q8" min="1" max="4" step="1" thumbLabel
+											tickInterval="1"></mat-slider>
 								<span *ngIf="q8Value">Score: {{ q8Value }}/4</span>
 							</p>
 							<label>9. Spelling/Grammar/Writing Style/Speaking Style</label>
 							<p>
-								<mat-slider (change)="changeSlider()" [(ngModel)]="q9Value"name="q9" min="1" max="4" step="1" thumbLabel tickInterval="1"></mat-slider>
+								<mat-slider [disabled]="canScore===false" (change)="changeSlider()"
+											[(ngModel)]="q9Value" name="q9" min="1" max="4" step="1" thumbLabel
+											tickInterval="1"></mat-slider>
 								<span *ngIf="q9Value">Score: {{ q9Value }}/4</span>
 							</p>
 							<label>10. Focused and Complete</label>
 							<p>
-								<mat-slider (change)="changeSlider()" [(ngModel)]="q10Value"name="q10" min="1" max="4" step="1" thumbLabel tickInterval="1"></mat-slider>
+								<mat-slider [disabled]="canScore===false" (change)="changeSlider()"
+											[(ngModel)]="q10Value" name="q10" min="1" max="4" step="1" thumbLabel
+											tickInterval="1"></mat-slider>
 								<span *ngIf="q10Value">Score: {{ q10Value }}/4</span>
 							</p>
 							<label>11. Demonstrates Valid Use of Data, Mathematics and Methods</label>
 							<p>
-								<mat-slider (change)="changeSlider()" [(ngModel)]="q11Value"name="q11" min="1" max="4" step="1" thumbLabel tickInterval="1"></mat-slider>
+								<mat-slider [disabled]="canScore===false" (change)="changeSlider()"
+											[(ngModel)]="q11Value" name="q11" min="1" max="4" step="1" thumbLabel
+											tickInterval="1"></mat-slider>
 								<span *ngIf="q11Value">Score: {{ q11Value }}/4</span>
 							</p>
 							<label>12. Visualization Elements Aid Comprehension</label>
 							<p>
-								<mat-slider (change)="changeSlider()" [(ngModel)]="q12Value"name="q12" min="1" max="4" step="1" thumbLabel tickInterval="1"></mat-slider>
+								<mat-slider [disabled]="canScore===false" (change)="changeSlider()"
+											[(ngModel)]="q12Value" name="q12" min="1" max="4" step="1" thumbLabel
+											tickInterval="1"></mat-slider>
 								<span *ngIf="q12Value">Score: {{ q12Value }}/4</span>
 							</p>
-
 
 						</div>
 
@@ -176,25 +167,35 @@
 				</div>
 				<div class="kt-portlet__foot kt-portlet__no-border">
 					<div class="kt-form__actions kt-form__actions--solid">
-						<div class="button-row">
-							<a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="onSumbit()"
+						<div class="button-row" *ngIf="canScore==true">
+							<a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary"
+							   (click)="onSumbit()"
 							   mat-raised-button matTooltip="Submit & Continue">
 								<span class="kt-hidden-mobile">Submit Review</span>
 							</a>
 							&nbsp;&nbsp;&nbsp;&nbsp;
-							<a [routerLink]="['../Dashboard']" class="btn btn-secondary kt-margin-r-10" mat-raised-button
+							<a [routerLink]="['../dashboard']" class="btn btn-secondary kt-margin-r-10"
+							   mat-raised-button
 							   matTooltip="Back to the users list">
 								<span class="kt-hidden-mobile">Cancel</span>
 							</a>
 						</div>
 
-
+						<div class="button-row d-flex justify-content-center" *ngIf="canScore==false">
+							<a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary"
+							   (click)="returnToPrevPage()"
+							   mat-raised-button matTooltip="Return To Previous Page">
+								<span class="kt-hidden-mobile">Main Menu</span>
+							</a>
+						</div>
 					</div>
 				</div>
 			</form>
-			<!--end::Form-->
-
 		</div>
-		​
 	</div>
+
+	<button mat-fab class="fab-btn" (click)="openDiscussionDialogBox()">
+		<mat-icon svgIcon="chat1"></mat-icon>
+	</button>
+
 </div>

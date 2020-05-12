@@ -25,7 +25,6 @@ import {
 } from '@angular/material';
 import {RouterModule, Routes} from '@angular/router';
 import {BaseComponent} from '../theme/base/base.component';
-import {ErrorPageComponent} from '../theme/content/error-page/error-page.component';
 import {ThemeModule} from '../theme/theme.module';
 import {IncomingDatatable} from './admin/incoming-datatable/incomingDatatable.component';
 import {ReviewInProgressComponent} from './review-in-progress/review-in-progress.component';
@@ -45,7 +44,6 @@ import {WorkSummaryComponent} from './work-summary/work-summary.component';
 import {CompletedReviewComponent} from './completed-review/completed-review.component';
 import {SummaryViewComponent} from './completed-review/summary-view/summary-view.component';
 import {AuthGuard, Role} from '../../core/auth';
-import {ReviewerService} from '../../core/reviewer/_services/reviewer.service';
 
 const routes:Routes=[
 	{
@@ -58,7 +56,6 @@ const routes:Routes=[
 				pathMatch: 'full'
 			},
 
-			// Admin page routing
 			{
 				path: 'incoming-work',
 				component: IncomingWorkComponent,
@@ -136,8 +133,6 @@ const routes:Routes=[
 				canActivate: [AuthGuard],
 				data: { roles: [Role.Reviewer, Role.Admin] }
 			},
-			// {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-			// {path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
 			{path: '', redirectTo: 'dashboard', pathMatch: 'full'},
 			{path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
 		]
@@ -164,7 +159,11 @@ const routes:Routes=[
 		SummaryViewComponent
 
 	],
-	entryComponents: [ReviewerToAssignComponent,ActionNotificationComponent, WorkSummaryComponent],
+	entryComponents: [
+		ReviewerToAssignComponent,
+		ActionNotificationComponent,
+		WorkSummaryComponent,
+	],
 
 	exports: [WorkSummaryComponent
 	],

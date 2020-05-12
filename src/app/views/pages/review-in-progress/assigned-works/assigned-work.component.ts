@@ -81,9 +81,6 @@ export class AssignedListComponent implements OnInit, DoCheck, OnDestroy {
 	 */
 	getItemCssClassByStatus(reviewDue: string = ''): string {
 
-		// console.log(this.currentDate);
-
-		// due date = 17 curr date =22
 		if (reviewDue < this.currentDate) {
 			return 'danger';
 		} else if (reviewDue >= this.currentDate) {
@@ -111,7 +108,7 @@ export class AssignedListComponent implements OnInit, DoCheck, OnDestroy {
 			} else {
 
 				// first, deactivate reviewer whose assignment is overdue
-				// and then swap the deactivated reviewer with selected reviewer from the dialogbox
+				// and then swap the deactivated reviewer with the selected reviewer from the dialogbox
 				this.deactivateUserByIdFromAssignment(reviewerToSwap.ReviewerID, this.workID);
 
 				const newAssignedReviewer = {
