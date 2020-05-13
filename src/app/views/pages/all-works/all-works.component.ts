@@ -99,7 +99,8 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 		this.subscription.push(subsc);
 	}
 
-	onClick(summary: Work) {
+	viewSummary(summary: Work) {
+
 
 		if (summary.Status === 'denied') {
 			const subsc = this.adminService.getAdminReview(summary.WID).subscribe(
@@ -125,6 +126,8 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 		} else {
 			const subsc = this.adminService.getReviewersScorecard(summary.WID.toString()).subscribe(
 				res=>{
+					console.log(res);
+
 					sessionStorage.setItem('summary', JSON.stringify(res[0]));
 					this.router.navigateByUrl('/admin/summary');
 
@@ -152,6 +155,7 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 				return 'text-danger';
 
 			case 'assigned':
+			case 'reviewed':
 				return 'text-primary';
 
 			case 'accepted':
@@ -167,7 +171,7 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 
 
 	showBtnToolTip(status: any) {
-		if (status == 'assigned') {
+		if (status == 'assigned' || status == 'reviewed') {
 			return 'Work Summary has not been generated yet';
 		} else {
 			return 'View Summary';
@@ -181,6 +185,9 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 
 			case 'assigned':
 				return 'Assigned reviewers are still reviewing the work';
+
+			case 'reviewed':
+				return 'Assigned lead reviewer has not generated summary yet';
 
 			case 'accepted':
 				return 'Admin accepted work';
@@ -199,10 +206,12 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 
 		if (work.Publish == 1) {
 			return 'Work is published';
-		} else if (work.Status == 'denied' || work.Status == 'rejected') {
+		} else if (work.Status == 'denied' || work.Status == 'rejected' ) {
 			return 'Rejected work cannot be published';
-		} else if (work.Status == 'assigned') {
+		} else if (work.Status == 'assigned' ) {
 			return 'Work has not been scored yet';
+		} else if (work.Status == 'reviewed' ) {
+			return 'Work cannot be published until without a review summary';
 		} else {
 			return 'Unpublished work';
 		}

@@ -35,7 +35,6 @@ import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {DiscussionComponent} from './discussion/discussion.component';
 import {MessageEffects} from '../../core/reviewer/_effects/message.effects';
 import {AuthGuard, Role} from '../../core/auth';
-import {ErrorPageComponent} from '../theme/content/error-page/error-page.component';
 import {InProgressComponent} from './assignment/in-progress/in-progress.component';
 import {SummaryComponent} from './summary/summary.component';
 
@@ -106,7 +105,8 @@ const routes: Routes = [
 		AssignmentComponent,
 		DiscussionComponent,
 		InProgressComponent,
-		SummaryComponent
+		SummaryComponent,
+
 	],
 
 	entryComponents: [DiscussionComponent],
@@ -115,31 +115,31 @@ const routes: Routes = [
 	exports: [
 		// DiscussionComponent
 	],
-	imports: [
-		CommonModule,
-		RouterModule.forChild(routes),  //////
-		HttpClientModule,
-		FormsModule,
-		CoreModule,
-		PartialsModule,
-		ThemeModule,
-		MatInputModule,
-		PerfectScrollbarModule,
-		MatTableModule,
-		MatSortModule,
-		MatPaginatorModule,
-		NgbModule,
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),  //////
+        HttpClientModule,
+        FormsModule,
+        CoreModule,
+        PartialsModule,
+        ThemeModule,
+        MatInputModule,
+        PerfectScrollbarModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        NgbModule,
 
 
-		StoreModule.forFeature('reviewer', reducers
-		),
-		EffectsModule.forFeature([ReviewHistoryEffects, AssignmentEffects, MessageEffects]),
-		MatButtonModule,
-		MatIconModule,
-		MatTooltipModule,
-		MatSliderModule,
-		MatProgressSpinnerModule,
-	],
+        StoreModule.forFeature('reviewer', reducers
+        ),
+        EffectsModule.forFeature([ReviewHistoryEffects, AssignmentEffects, MessageEffects]),
+        MatButtonModule,
+        MatIconModule,
+        MatTooltipModule,
+        MatSliderModule,
+        MatProgressSpinnerModule,
+    ],
 
 	providers: [
 		ReviewerService,

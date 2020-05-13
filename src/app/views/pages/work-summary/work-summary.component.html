@@ -37,11 +37,26 @@
 		<div class="col-sm-3 overall border">
 			<div class="d-flex justify-content-center">
 				<span>
-					{{overallScore/numbReviewers | number :  '1.2-2' }}
+					{{overallScore/numbReviewers }}
 				</span>
 			</div>
 		</div>
 
+	</div>
+
+	<br>
+	<br>
+	<div class="row justify-content-start  ws_body">
+		<div class="col-sm-7 text-right"></div>
+		<div class="col-sm-2 text-right">
+			<strong>Current Threshold:</strong>
+		</div>
+		<div class="col-sm-3">
+			<div class="d-flex text-righ">
+            <span><strong> <p style="color:red;">{{threshold}}</p></strong>
+            </span>
+			</div>
+		</div>
 	</div>
 
 </div>

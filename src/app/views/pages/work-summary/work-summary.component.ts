@@ -1,5 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit, Optional} from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material';
+import {AdminService} from '../../../core/admin/_services/admin.service';
+import {Subscription} from 'rxjs';
 
 
 @Component({
@@ -15,10 +17,13 @@ export class WorkSummaryComponent implements OnInit, OnDestroy {
 
 	adminReview: any;
 	numbReviewers:number=0;
+	threshold: number =0;
 
+	subscription:Subscription;
 
 	constructor(
 		private ref: ChangeDetectorRef,
+		private adminService:AdminService
 	) {
 	}
 
@@ -26,9 +31,21 @@ export class WorkSummaryComponent implements OnInit, OnDestroy {
 		if (!this.scorecards) {
 			this.adminReview = JSON.parse(sessionStorage.getItem('summary'));
 		}
+
+		this.subscription = this.adminService.getThreshold().subscribe(
+			res=>{
+				if (res) {
+					this.threshold = res;
+					this.ref.markForCheck();
+				}
+			}
+		)
 	}
 
 	ngOnDestroy(): void {
+		if (this.subscription) {
+			this.subscription.unsubscribe();
+		}
 	}
 
 	getTotalScore(scorecard: any) {

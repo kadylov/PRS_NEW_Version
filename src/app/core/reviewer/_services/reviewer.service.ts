@@ -1,18 +1,15 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable, of, throwError} from 'rxjs';
-import {User1} from '../../auth/_models/user1.model';
+import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {ReviewHistory} from '../_models/review-history.model';
 import {Assignment} from '../_models/assignment.model';
-import {DataTableWorkModel} from '../../_base/layout';
 import {Message} from '../_models/message.model';
-import {Work} from '../../../views/author/model/work';
 import {environment} from '../../../../environments/environment';
-import {error} from '@angular/compiler/src/util';
 
 
 const API_REVIEWER_URL = environment.baseUrl + 'reviewer_request.php';
+const summaryURL = environment.baseUrl + 'summary.php';
 const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
 
 @Injectable()
@@ -132,5 +129,9 @@ export class ReviewerService {
 					return throwError(err);
 				})
 			);
+	}
+
+	sendSummary(summary: { LeadID: number; WorkID: any; WorkFinalScore: number; SummaryText: string }):Observable<any> {
+		return this.http.post(summaryURL,summary);
 	}
 }

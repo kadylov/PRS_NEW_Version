@@ -15,11 +15,7 @@
 			</div>
 			<div class="kt-portlet__body">
 
-
-<!--				<div *ngIf="summary['Status']==='scored'">-->
 					<work-summary [scorecards]="summary['Scorecards']"></work-summary>
-<!--				</div>-->
-
 
 
 				<div class="align-self-center d-flex mt-5" *ngIf="summary['Status']==='scored'; else showMainMenuBtn">

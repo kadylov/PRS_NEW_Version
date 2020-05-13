@@ -66,12 +66,14 @@ export class InProgressComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		this.assignment = JSON.parse(sessionStorage.getItem('assignment'));
 
+
 		// checks whether assignment is for scoring or for reading
 		if (this.assignment) {
 			this.workID = this.assignment['WorkID'];
 
 			this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.assignment.URL);
 		} else {
+
 			this.loadScoredAssigment();
 		}
 
@@ -125,6 +127,7 @@ export class InProgressComponent implements OnInit, OnDestroy {
 		this.workID = scorecard['WorkID'];
 
 		const scores = scorecard['Scorecard'];
+
 		if (scores) {
 			this.q1Value = +scores['1'];
 			this.q2Value = +scores['2'];

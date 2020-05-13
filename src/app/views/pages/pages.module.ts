@@ -44,6 +44,7 @@ import {WorkSummaryComponent} from './work-summary/work-summary.component';
 import {CompletedReviewComponent} from './completed-review/completed-review.component';
 import {SummaryViewComponent} from './completed-review/summary-view/summary-view.component';
 import {AuthGuard, Role} from '../../core/auth';
+import {SetThresholdComponent} from './admin/set-threshold/set-threshold.component';
 
 const routes:Routes=[
 	{
@@ -125,14 +126,22 @@ const routes:Routes=[
 				path: 'export-import-db',
 				component: ExportImportDbComponent,
 				canActivate: [AuthGuard],
-				data: { roles: [Role.Reviewer, Role.Admin] }
+				data: { roles: [Role.Admin] }
 			},
 			{
 				path: 'rubric',
 				component: RubricComponent,
 				canActivate: [AuthGuard],
-				data: { roles: [Role.Reviewer, Role.Admin] }
+				data: { roles: [Role.Admin] }
 			},
+			{
+				path: 'threshold',
+				component: SetThresholdComponent,
+				canActivate: [AuthGuard],
+				data: { roles: [Role.Admin] }
+			},
+
+
 			{path: '', redirectTo: 'dashboard', pathMatch: 'full'},
 			{path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
 		]
@@ -156,7 +165,8 @@ const routes:Routes=[
 		AllWorksComponent,
 		RubricComponent,
 		WorkSummaryComponent,
-		SummaryViewComponent
+		SummaryViewComponent,
+		SetThresholdComponent
 
 	],
 	entryComponents: [
@@ -165,7 +175,7 @@ const routes:Routes=[
 		WorkSummaryComponent,
 	],
 
-	exports: [WorkSummaryComponent
+	exports: [WorkSummaryComponent,
 	],
     imports: [
         CommonModule,

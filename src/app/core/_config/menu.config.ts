@@ -30,7 +30,13 @@ export class MenuConfig {
 					page: '/admin/user-management',
 
 				},
+				{
+					title: 'Threshold',
+					root: true,
+					alignment: 'left',
+					page: '/admin/threshold',
 
+				},
 			]
 		},
 		aside: {
@@ -43,30 +49,12 @@ export class MenuConfig {
 					page: '/admin/dashboard',
 					bullet: 'dot',
 				},
-				// {
-				// 	title: 'Incoming Works', // <= Title of the page
-				// 	root: true,
-				// 	page: '/admin/incoming-work', // <= URL
-				// 	icon: 'flaticon-line-graph' // <= Choose the icon class
-				// },
-				// {
-				// 	title: 'Assignments', // <= Title of the page
-				// 	root: true,
-				// 	page: '/admin/assignment', // <= URL
-				// 	icon: 'flaticon-line-graph' // <= Choose the icon class
-				// },
 				{
 					title: 'Assignments', // <= Title of the page
 					root: true,
 					page: '/admin/assignment', // <= URL
 					icon: 'flaticon-line-graph' // <= Choose the icon class
 				},
-				// {
-				// 	title: 'In-Progress', // <= Title of the page
-				// 	root: true,
-				// 	page: '/admin/in-progress', // <= URL
-				// 	icon: 'flaticon-line-graph' // <= Choose the icon class
-				// },
 				{
 					title: 'Reviews In Progress', // <= Title of the page
 					root: true,
@@ -88,13 +76,6 @@ export class MenuConfig {
 
 
 				{section: 'Members'},
-				// {
-				// 	title: 'Members',
-				// 	bullet: 'dot',
-				// 	icon: 'flaticon2-list-2',
-				// 	root: true,
-				// 	permission: 'accessToECommerceModule',
-				// },
 				{
 					title: 'User Management',
 					root: true,
@@ -109,13 +90,6 @@ export class MenuConfig {
 				},
 
 				{section: 'Database'},
-				// {
-				// 	title: 'Members',
-				// 	bullet: 'dot',
-				// 	icon: 'flaticon2-list-2',
-				// 	root: true,
-				// 	permission: 'accessToECommerceModule',
-				// },
 				{
 					title: 'Export/Import Database',
 					root: true,
@@ -124,19 +98,20 @@ export class MenuConfig {
 				},
 
 				{section: 'Project'},
-				// {
-				// 	title: 'Members',
-				// 	bullet: 'dot',
-				// 	icon: 'flaticon2-list-2',
-				// 	root: true,
-				// 	permission: 'accessToECommerceModule',
-				// },
 				{
 					title: 'Scorecard Rubric',
 					root: true,
 					page: '/admin/rubric', // <= URL
 					icon: 'flaticon-open-box',
 				},
+
+				{
+					title: 'Threshold',
+					root: true,
+					page: '/admin/threshold', // <= URL
+					icon: 'flaticon-open-box',
+				},
+
 			]
 		},
 	};

@@ -142,8 +142,18 @@ export class AdminService {
 		return group;
 	}
 
-	getReviewersScorecard(wid: string = ''): Observable<any> {
-		return this.http.get(scorecardsUrls, {params: {WID: wid}}).pipe(
+	getReviewersScorecard(wid: string = '', status:string=''): Observable<any> {
+		let params;
+		if (status == 'reviewed') {
+			params = {
+				WID: wid,
+				Status: 'reviewed'
+			};
+		}else {
+			params = {WID: wid };
+		}
+
+		return this.http.get(scorecardsUrls, {params: params}).pipe(
 			map(res => {
 				if (res[0]) {
 					return res;
@@ -161,10 +171,25 @@ export class AdminService {
 		});
 	}
 
-	sendThreshold(threshold: number) {
+	sendThreshold(threshold: number): Observable<any> {
 		const body = new HttpParams()
 			.set(`sendThreshold`, threshold.toString());
-		return this.http.post<any>(ADMIN_REQUEST, body, {headers: headers});
+		return this.http.post<any>(ADMIN_REQUEST, body, {headers: headers})
+			.pipe(
+				catchError(err => {
+					return throwError(err);
+				})
+			);
+	}
+
+	getThreshold(): Observable<number> {
+		return this.http.get<number>(ADMIN_REQUEST, {params: {getThreshold: 'any'}})
+			.pipe(
+				map(res=>{
+					return res[0]['Threshold'];
+				}),
+				catchError(err => { return throwError(err)})
+			);
 	}
 
 	private convertToArray(str: string[]) {

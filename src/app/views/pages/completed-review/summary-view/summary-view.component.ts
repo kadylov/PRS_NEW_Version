@@ -1,8 +1,8 @@
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {SafeUrl} from '@angular/platform-browser';
 import {Router} from '@angular/router';
 import {WorkService} from '../../../author/service/work.service';
-import {Observable, of, Subscription} from 'rxjs';
+import { Subscription} from 'rxjs';
 import {Location} from '@angular/common';
 
 @Component({
@@ -12,6 +12,7 @@ import {Location} from '@angular/common';
 	changeDetection: ChangeDetectionStrategy.OnPush
 
 })
+// Admin Summary view
 export class SummaryViewComponent implements OnInit, OnDestroy {
 
 	isFullscreen: boolean = false;
