@@ -37,6 +37,7 @@ import {MessageEffects} from '../../core/reviewer/_effects/message.effects';
 import {AuthGuard, Role} from '../../core/auth';
 import {ErrorPageComponent} from '../theme/content/error-page/error-page.component';
 import {InProgressComponent} from './assignment/in-progress/in-progress.component';
+import {SummaryComponent} from './summary/summary.component';
 
 
 const routes: Routes = [
@@ -49,26 +50,26 @@ const routes: Routes = [
 				redirectTo: 'dashboard',
 				pathMatch: 'full',
 				canActivate: [AuthGuard],
-				data: { roles: [Role.Reviewer, Role.LeadReviewer] }
+				data: {roles: [Role.Reviewer, Role.LeadReviewer]}
 			},
 			{
 				path: 'dashboard',
 				component: R_DashboardComponent,
 				canActivate: [AuthGuard],
-				data: { roles: [Role.Reviewer, Role.LeadReviewer] }
+				data: {roles: [Role.Reviewer, Role.LeadReviewer]}
 			},
 			{
 				path: 'assignment_history',
 				component: AssignmentHistoryComponent,
 				canActivate: [AuthGuard],
-				data: { roles: [Role.Reviewer, Role.LeadReviewer] }
+				data: {roles: [Role.Reviewer, Role.LeadReviewer]}
 
 			},
 			{
 				path: 'reviews',
 				component: ReviewHistoryComponent,
 				canActivate: [AuthGuard],
-				data: { roles: [Role.Reviewer,Role.LeadReviewer] }
+				data: {roles: [Role.Reviewer, Role.LeadReviewer]}
 
 			},
 
@@ -76,7 +77,7 @@ const routes: Routes = [
 				path: 'assignment',
 				component: AssignmentComponent,
 				canActivate: [AuthGuard],
-				data: { roles: [Role.Reviewer, Role.LeadReviewer] }
+				data: {roles: [Role.Reviewer, Role.LeadReviewer]}
 
 			},
 
@@ -84,8 +85,14 @@ const routes: Routes = [
 				path: 'in-progress',
 				component: InProgressComponent,
 				canActivate: [AuthGuard],
-				data: { roles: [Role.Reviewer] }
+				data: {roles: [Role.Reviewer, Role.LeadReviewer]}
 			},
+			{
+				path: 'summary',
+				component: SummaryComponent,
+				canActivate: [AuthGuard],
+				data: {roles: [Role.LeadReviewer]}
+			}
 
 		]
 	}
@@ -98,7 +105,8 @@ const routes: Routes = [
 		R_DashboardComponent,
 		AssignmentComponent,
 		DiscussionComponent,
-		InProgressComponent
+		InProgressComponent,
+		SummaryComponent
 	],
 
 	entryComponents: [DiscussionComponent],

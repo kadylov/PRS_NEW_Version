@@ -3,16 +3,18 @@ import {AssignmentModel} from './assignment.model';
 export class ReviewInProgressModel extends AssignmentModel {
 	Reviewers?: Reviewer[];
 	DateAssigned?: string;
-	DueDate: string;
+	// DueDate: string;
 }
 
 
 export class Reviewer {
 	ReviewerID: number;
 	ReviewerName: string;
+	Email?: string;
 	Role: string;
 	Credential?: string;
 	ReviewedThisMonth?: string;
 	TotalReviews?: string;
+	DueDate?:string
 
 }

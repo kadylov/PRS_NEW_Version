@@ -48,6 +48,7 @@ export class AdminService {
 
 	}
 
+	// get a list of reviewers who were not assigned
 	public getReviewersForAssignment(workID: number): Observable<Reviewer[]> {
 		// console.log('aaaa', workID);
 		if (workID > 0) {
@@ -138,14 +139,17 @@ export class AdminService {
 			group.push(work);
 		});
 
-		// console.log(reviewers);
-		// console.log("Ass ",assignedWorks);
-
 		return group;
 	}
 
 	getReviewersScorecard(wid: string = ''): Observable<any> {
-		return this.http.get(scorecardsUrls, {params: {WID: wid}});
+		return this.http.get(scorecardsUrls, {params: {WID: wid}}).pipe(
+			map(res => {
+				if (res[0]) {
+					return res;
+				}
+			})
+		);
 	}
 
 	getAdminReview(wid: number): Observable<any> {
@@ -155,6 +159,12 @@ export class AdminService {
 				WID: wid.toString()
 			}
 		});
+	}
+
+	sendThreshold(threshold: number) {
+		const body = new HttpParams()
+			.set(`sendThreshold`, threshold.toString());
+		return this.http.post<any>(ADMIN_REQUEST, body, {headers: headers});
 	}
 
 	private convertToArray(str: string[]) {

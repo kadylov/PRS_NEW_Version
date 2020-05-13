@@ -37,8 +37,10 @@ export class AssignmentComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+
+		// get all assignment for current reviewer
 		this.store.dispatch(new AssignmentRequested(this.getUserId()));
-		this.loadAssignmentHistory();
+		this.loadAssignments();
 	}
 
 	ngOnDestroy(): void {
@@ -47,10 +49,13 @@ export class AssignmentComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	loadAssignmentHistory() {
+	// load all assignments
+	loadAssignments() {
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.sort = this.sort;
 
+		// check whether reviewer's current assignments arrived from server
+		// then store it store it to database
 		this.store.select(fromReviewer.getCurrAssignmentsLoaded).subscribe(isLoaded => {
 			if (isLoaded) {
 				let subc$ = this.store.select(fromReviewer.getCurrAssignments)
@@ -64,12 +69,15 @@ export class AssignmentComponent implements OnInit, OnDestroy {
 		});
 	}
 
+	// get user id of the current user
 	getUserId() {
 		let user: User1 = JSON.parse(sessionStorage.getItem('user'));
 		return user.id;
 	}
 
 
+	// store selected assignment from the table to session storage and
+	// then redirect to scorecard page
 	viewAssignment(work: any) {
 
 		sessionStorage.setItem('assignment', JSON.stringify(work));

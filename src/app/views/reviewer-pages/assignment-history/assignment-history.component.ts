@@ -1,10 +1,9 @@
 import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {ReviewHistory} from '../../../core/reviewer/_models/review-history.model';
 import {Subscription} from 'rxjs';
 import * as fromReviewer from '../../../core/reviewer/_reducers';
 import {Store} from '@ngrx/store';
-import {AssignmentHistoryRequested, AssignmentRequested} from '../../../core/reviewer/_actions/assignment.actions';
+import {AssignmentHistoryRequested} from '../../../core/reviewer/_actions/assignment.actions';
 import {User1} from '../../../core/auth/_models/user1.model';
 import {Assignment} from '../../../core/reviewer/_models/assignment.model';
 import {Router} from '@angular/router';
@@ -36,6 +35,7 @@ export class AssignmentHistoryComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		// send request to the state for loading assignment history for the reviewer
 		this.store.dispatch(new AssignmentHistoryRequested(this.getUserId()));
 		this.loadAssignmentHistory();
 	}
@@ -46,10 +46,14 @@ export class AssignmentHistoryComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	// loads all reviewer's assignments
+	// regardless reviewer scored or not
 	loadAssignmentHistory() {
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.sort = this.sort;
 
+		// if the assignment history was received from the server,
+		// load the history to the table
 		let subc$ = this.store.select(fromReviewer.getAssignmentHistoryLoaded).subscribe(isLoaded => {
 			if (isLoaded) {
 				let loadSubc$ = this.store.select(fromReviewer.getAssignmentHistory)
@@ -63,18 +67,21 @@ export class AssignmentHistoryComponent implements OnInit, OnDestroy {
 
 	}
 
+	// returns id of the reviewer
 	getUserId() {
 		let user: User1 = JSON.parse(sessionStorage.getItem('user'));
 		return user.id;
 	}
 
+
+	// fetch scored scorecard from the server
 	viewScorecard(assignment: any) {
 		const subsc = this.reviewerService.getScorecard(assignment.WorkID, assignment.ReviewerID).subscribe(
 			scorecard=>{
 
-				// if the server responds back with the reviewer's filled scorecard,
+				// if the server responds back with the reviewer's scored scorecard,
 				// then store it to the session and redirect to scorecard page (e.g. in-progress page)
-				// else the reviewer did not review the work on time, so store the assignment to session
+				// else the reviewer did not review the work on time, so open scorecard page in read mode
 				if (scorecard) {
 					sessionStorage.setItem('scorecard', JSON.stringify(scorecard));
 					this.router.navigateByUrl('reviewer/in-progress');

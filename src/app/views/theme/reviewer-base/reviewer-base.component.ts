@@ -11,12 +11,10 @@ import { LayoutConfig } from '../../../core/_config/layout.config';
 import { MenuConfig } from '../../../core/_config/menu.config';
 import { PageConfig } from '../../../core/_config/page.config';
 // User permissions
-import { NgxPermissionsService } from 'ngx-permissions';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../../../core/reducers';
 import {ReviewerLayoutConfig} from '../../../core/_config/reviewer-layout.config';
 import {ReviewerMenuConfig} from '../../../core/_config/reviewer_menu.config';
 import {ReviewerPageConfig} from '../../../core/_config/reviewer-page.config';
+import {User1} from '../../../core/auth/_models/user1.model';
 
 @Component({
 	selector: 'kt-rbase',
@@ -55,8 +53,18 @@ export class ReviewerBaseComponent implements OnInit, OnDestroy {
 		private htmlClassService: HtmlClassService,
 	) {
 
-		// register configs by demos
+		let user: User1 = JSON.parse(sessionStorage.getItem('user'));
+		// if (user.roleType == 'Reviewer') {
+		// 	this.menuConfigService.loadConfigs(new ReviewerMenuConfig().configs);
+		// }
+		// else {
+		// 	this.menuConfigService.loadConfigs(new LeadReviewerMenuConfig().configs);
+		//
+		// }
+
 		this.menuConfigService.loadConfigs(new ReviewerMenuConfig().configs);
+
+		// register configs by demos
 		this.pageConfigService.loadConfigs(new ReviewerPageConfig().configs);
 		this.layoutConfigService.loadConfigs(new ReviewerLayoutConfig().configs);
 

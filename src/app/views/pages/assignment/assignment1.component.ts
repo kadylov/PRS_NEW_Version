@@ -6,6 +6,8 @@ import {ReviewerToAssignComponent} from '../reviewersToAssign/reviewer-to-assign
 import {DatePipe} from '@angular/common';
 import {MatDialog} from '@angular/material';
 import {LayoutUtilsService, MessageType} from '../../../core/_base/crud';
+import {EmailService} from '../../../core/email-notification/_services/email.service';
+import {Email} from '../../../core/email-notification/_models/email.model';
 
 
 @Component({
@@ -30,7 +32,9 @@ export class AssignmentComponent1 implements OnInit, OnDestroy {
 		public dialog: MatDialog,
 		private ref: ChangeDetectorRef,
 		private layoutUtilsService: LayoutUtilsService,
-		private adminService: AdminService) {
+		private adminService: AdminService,
+		private emailService: EmailService
+	) {
 
 		let subsc = this.adminService.getUnassignedWorks().subscribe(
 			res => {
@@ -144,18 +148,27 @@ export class AssignmentComponent1 implements OnInit, OnDestroy {
 
 	}
 
+	// submit selected reviewers and their due date for the work to the aserver
 	submitChanges(review: ReviewInProgressModel) {
 
+		// create assignment object
 		const assignment = {
 			AdminID: this.getAdminId(),
-			Reviewers: review.Reviewers,
+
+			// a list of selected reviewers and their due dates
+			ReviewersAndDueDate: review.Reviewers,
+
+			// work that needs to be assigned to
 			WorkID: review.WID,
 		};
 
+
 		this.subscriptions.push(this.adminService.assignGroupReviewers(assignment).subscribe(
 			res => {
+
 				this.displayConfirmationMessage('Reviewers have been assigned successfully.');
-			}
+			},
+			err=>{console.log(err);}
 		));
 
 		this.hideAssignedWork(review);
@@ -169,5 +182,32 @@ export class AssignmentComponent1 implements OnInit, OnDestroy {
 
 	private displayConfirmationMessage(message: string) {
 		this.layoutUtilsService.showActionNotification(message, MessageType.Create, 5000, true, false);
+	}
+
+	private notifyReviewers(reviewers: Reviewer[]) {
+		const user = JSON.parse(sessionStorage.getItem('user'));
+
+		reviewers.forEach(reviewer=>{
+
+			let email: Email = {
+				senderName: 'admin',
+				senderEmail: user.Email,
+				recepientName: reviewer.ReviewerName,
+				recepientEmail: reviewer.Email,
+				subject: 'PRS: New Assignment',
+				message: 'Hello',
+				canReply: 0
+			};
+
+
+
+			// this.emailService.sendEmail(email);
+
+
+		});
+
+
+
+
 	}
 }

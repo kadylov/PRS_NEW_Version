@@ -101,7 +101,7 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 
 	onClick(summary: Work) {
 
-		if (summary.Status == 'denied') {
+		if (summary.Status === 'denied') {
 			const subsc = this.adminService.getAdminReview(summary.WID).subscribe(
 				res=>{
 

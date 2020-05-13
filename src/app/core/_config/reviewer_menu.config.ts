@@ -33,7 +33,6 @@ export class ReviewerMenuConfig {
 					root: true,
 					icon: 'flaticon2-architecture-and-city',
 					page: '/reviewer/dashboard',
-					// translate: 'MENU.DASHBOARD',
 					bullet: 'dot',
 				},
 				{
@@ -47,6 +46,14 @@ export class ReviewerMenuConfig {
 					root: true,
 					page: '/reviewer/reviews', // <= URL
 					icon: 'flaticon-line-graph' // <= Choose the icon class
+				},
+				{
+					title: 'Summary', // <= Title of the page
+					root: true,
+					page: '/reviewer/summary', // <= URL
+					icon: 'flaticon-line-graph', // <= Choose the icon class
+					permission: 'lead',
+
 				},
 			]
 		},

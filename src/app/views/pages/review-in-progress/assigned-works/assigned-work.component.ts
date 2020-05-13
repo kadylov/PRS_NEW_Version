@@ -29,7 +29,7 @@ export class AssignedListComponent implements OnInit, DoCheck, OnDestroy {
 
 	@Input() reviewers: Reviewer[];
 	@Input() workID: number;
-	@Input() dataSource1: MatTableDataSource<Reviewer>;
+	// @Input() dataSource1: MatTableDataSource<Reviewer>;
 	@Input() showButton: boolean = false;
 
 	@Output() updatedReviewerList = new EventEmitter<Reviewer[]>();

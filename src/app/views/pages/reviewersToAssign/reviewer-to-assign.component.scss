@@ -10,3 +10,11 @@
 :host::ng-deep .mat-button-focus-overlay {
 	background-color: transparent!important;
 }
+
+.btn.btn-default{
+	color: black;
+}
+
+.btn.btn-default:hover{
+	color: white;
+}

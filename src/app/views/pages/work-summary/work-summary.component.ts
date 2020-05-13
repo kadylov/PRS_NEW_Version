@@ -14,6 +14,8 @@ export class WorkSummaryComponent implements OnInit, OnDestroy {
 	@Input() scorecards: any;
 
 	adminReview: any;
+	numbReviewers:number=0;
+
 
 	constructor(
 		private ref: ChangeDetectorRef,
@@ -32,7 +34,11 @@ export class WorkSummaryComponent implements OnInit, OnDestroy {
 	getTotalScore(scorecard: any) {
 		const scoredRubrics = scorecard['Scores'];
 		const totalScore = scoredRubrics.reduce((acc, rubric) => acc + parseFloat(rubric.Score), 0);
+
 		this.overallScore += totalScore;
+		this.numbReviewers++;
+
+
 		return totalScore;
 	}
 

@@ -34,18 +34,18 @@ export class InProgressComponent implements OnInit, OnDestroy {
 	q12Value = 0;
 	cValue = 0;
 
+	// for dispalying loading animation while work url is loading in iframe
 	loading: boolean = true;
+
+	// flag for setting material review container to full screen
 	isFullscreen: boolean = false;
 	subscription: Subscription[] = [];
 	assignment:any = null;
-	safeUrl: SafeUrl;
-	canScore: boolean = true;
+	safeUrl: SafeUrl;						// for url sanitazing prior loading to iframe
+	canScore: boolean = true;				// flag for setting scorecard to reading or writting mode
 
-	modal:boolean = false;
 
-	workID: number;
-
-	closeResult: string;
+	workID: number;							// will be used for loading messages in discussion dialog
 
 
 	constructor(
@@ -57,12 +57,16 @@ export class InProgressComponent implements OnInit, OnDestroy {
 		public dialog: MatDialog,
 		private reviewerService: ReviewerService
 	) {
+
+		// load icon for the floating button
 		iconRegistry.addSvgIcon('chat1',
 			sanitizer.bypassSecurityTrustResourceUrl('./assets/media/icons/svg/Communication/Chat_1.svg'));
 	}
 
 	ngOnInit() {
 		this.assignment = JSON.parse(sessionStorage.getItem('assignment'));
+
+		// checks whether assignment is for scoring or for reading
 		if (this.assignment) {
 			this.workID = this.assignment['WorkID'];
 
@@ -82,6 +86,8 @@ export class InProgressComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	// submits user data from scorecard to the server
+	// the function is called when user clicks on submit button
 	onSumbit() {
 		const subsc = this.reviewerService.sendScores(this.assignment.WorkID, this.getCurrentUserID(),
 			this.q1Value, this.q2Value, this.q3Value, this.q4Value,
@@ -97,15 +103,21 @@ export class InProgressComponent implements OnInit, OnDestroy {
 	}
 
 
+	// calculate cumulative score
+	// it is called when user slides one of the sliders on the scorecard
 	changeSlider() {
 		this.cValue = this.q1Value + this.q2Value + this.q3Value + this.q4Value + this.q5Value + this.q6Value + this.q7Value + this.q8Value + this.q9Value + this.q10Value + this.q11Value + this.q12Value;
 	}
 
+	// returns id of the reviewer
 	getCurrentUserID() {
 		const user: User1 = JSON.parse(sessionStorage.getItem('user'));
 		return user.id;
 	}
 
+	// loads previously scored scorecard in read mode
+	// it is called when reviewer wants review one of his/her scored works
+	// in review history component or in assignment history component
 	loadScoredAssigment() {
 		const scorecard = JSON.parse(sessionStorage.getItem('scorecard'));
 		this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(scorecard.URL);
@@ -155,6 +167,10 @@ export class InProgressComponent implements OnInit, OnDestroy {
 	}
 
 
+	// opens up discussion dialog box
+	// it is called when reviewer clicks on the floating button in progress.component.html
+	// it passes workID for loading reviewers messages that related to the work and canScore status
+	// that indicate whether reviewer can send any message via textfield
 	openDiscussionDialogBox(){
 		const dialogRef = this.dialog.open(DiscussionComponent, {
 			panelClass: 'discussion-dialog-container',

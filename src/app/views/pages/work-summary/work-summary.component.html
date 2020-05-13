@@ -17,7 +17,7 @@
 <!--	 body-->
 	<div class="row justify-content-start mb-1 ws_body" *ngFor="let scorecard of scorecards">
 		<div class="col-sm align-self-center">{{scorecard.ReviewerName}}</div>
-		<div class="col-sm align-self-center">{{scorecard.Role}}</div>
+		<div class="col-sm align-self-center">{{scorecard.RoleType}}</div>
 		<div class="col-sm align-self-center">{{scorecard.Credential}}</div>
 		<div class="col-sm align-self-center">
 			<div class="d-flex justify-content-center">
@@ -37,7 +37,7 @@
 		<div class="col-sm-3 overall border">
 			<div class="d-flex justify-content-center">
 				<span>
-					{{overallScore}}
+					{{overallScore/numbReviewers | number :  '1.2-2' }}
 				</span>
 			</div>
 		</div>

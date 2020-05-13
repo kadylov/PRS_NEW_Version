@@ -14,6 +14,7 @@ import * as objectPath from 'object-path';
 // Layout
 import { LayoutConfigService, MenuAsideService, MenuOptions, OffcanvasOptions } from '../../../core/_base/layout';
 import { HtmlClassService } from '../html-class.service';
+import {User1} from '../../../core/auth/_models/user1.model';
 
 @Component({
 	selector: 'kt-aside-left',
@@ -24,6 +25,10 @@ import { HtmlClassService } from '../html-class.service';
 export class AsideLeftComponent implements OnInit, AfterViewInit {
 
 	@ViewChild('asideMenu', {static: true}) asideMenu: ElementRef;
+
+
+	userRole:string='Reviewer';
+
 
 	currentRouteUrl: string = '';
 	insideTm: any;
@@ -83,6 +88,10 @@ export class AsideLeftComponent implements OnInit, AfterViewInit {
 	}
 
 	ngOnInit() {
+
+		const user:User1 = JSON.parse(sessionStorage.getItem('user'));
+		this.userRole = user.roleType;
+
 		this.currentRouteUrl = this.router.url.split(/[?#]/)[0];
 
 		this.router.events

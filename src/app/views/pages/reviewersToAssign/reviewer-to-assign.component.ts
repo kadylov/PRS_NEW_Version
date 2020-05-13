@@ -17,7 +17,7 @@ export class ReviewerToAssignComponent implements OnInit, OnDestroy {
 	@ViewChild(MatSort, {static: true}) sort: MatSort;
 
 	dataSource: MatTableDataSource<Reviewer>;
-	displayedColumns = ['id', 'fullname', 'credentialType', 'roleType', 'reviewedThisMonth', 'totalReviews', 'setDueDate'];
+	displayedColumns = ['id', 'fullname','credentialType', 'roleType', 'reviewedThisMonth', 'totalReviews', 'setDueDate'];
 	selection = new SelectionModel<Reviewer>(false, []);
 
 	due_date: FormControl = new FormControl('', [Validators.required]);
@@ -51,16 +51,16 @@ export class ReviewerToAssignComponent implements OnInit, OnDestroy {
 		}
 	}
 
+
+	// get a list of reviewers for assignment
 	loadReviewers() {
 		const subsc = this.adminService.getReviewersForAssignment(this.data.workID).subscribe(
 			reviewerArray => {
 
 				if (this.data.reviewers != undefined) {
-					console.log(this.data.reviewers);
 
 					// remove duplicates from the array
 					reviewerArray= this.union(reviewerArray,this.data.reviewers);
-
 				}
 
 				this.dataSource.data = reviewerArray;

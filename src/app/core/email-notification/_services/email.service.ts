@@ -31,7 +31,24 @@ export class EmailService {
 	*
 	* */
 
-	sendEmail(email: Email): Observable<any> {
+	// sendEmail(email: Email): Observable<any> {
+	// 	const body = new HttpParams()
+	// 		.set(`contactMessage`, 'contactMessage',)
+	// 		.set(`senderName`, email.senderName)
+	// 		.set(`senderEmail`, email.senderEmail)
+	// 		.set(`subject`, email.subject)
+	// 		.set(`message`, email.message)
+	// 		.set(`canReply`, email.canReply.toString());
+	// 	return this.http.post<any>(url, body, {headers: headers})
+	// 		.pipe(
+	// 			catchError(err => {
+	// 				return throwError(err);
+	// 			})
+	// 		);
+	// }
+
+
+	sendEmail(email: Email) {
 		const body = new HttpParams()
 			.set(`contactMessage`, 'contactMessage',)
 			.set(`senderName`, email.senderName)
@@ -46,6 +63,7 @@ export class EmailService {
 				})
 			);
 	}
+
 
 	// send email to author about any progress of the submitted work
 	sendWorkStatusEmail(email: Email): Observable<any> {

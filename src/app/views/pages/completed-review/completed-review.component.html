@@ -12,7 +12,7 @@
 		</div>
 	</div>
 
-	<div class="kt-portlet__body">
+	<div class="kt-portlet__body" *ngIf="scoredWorks$ | async as scoredWorks; else noWorks">
 		<div class="border" style="padding: 0 10px; font-weight: 500">
 			<div class="row border-bottom bg-light">
 				<div class="col-sm-1 py-3">ID</div>
@@ -29,7 +29,7 @@
 
 			</div>
 
-			<div class="row" *ngIf="scoredWorks$ | async as scoredWorks">
+			<div class="row" >
 				<ng-container *ngFor="let w of scoredWorks">
 
 					<div class="col-sm-1 py-3 align-self-center">{{w.WID}}</div>
@@ -56,4 +56,13 @@
 			</div>
 		</div>
 	</div>
+
+	<ng-template #noWorks>
+		<div class="bg-white d-flex justify-content-center w-100">
+			<div class=" align-self-center my-4 ">
+				<h4>There are no completed works.</h4>
+			</div>
+
+		</div>
+	</ng-template>
 </div>

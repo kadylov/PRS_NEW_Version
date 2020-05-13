@@ -20,19 +20,17 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 export class DiscussionComponent implements OnInit {
 
 	@Input() title: string = 'Discussion';
-	@Input() workID: number;
-	@Output() close1 = new EventEmitter<void>();
+	@Input() workID: number;							// work id for loading messages of all assigned reviewers for this workID
+	@Output() close1 = new EventEmitter<void>();		// for minimizing the discussion
 
 
 	messages$: Observable<Message[]>;
-	newMessage: string;
-
-	reviewer: User1;
+	reviewer: User1;									// will be used for sending new message
 
 	constructor(
 		private store: Store<fromReviewer.ReviewerState>,
 		private dialogRef: MatDialogRef<DiscussionComponent>,
-		@Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+		@Optional() @Inject(MAT_DIALOG_DATA) public data: any, 			// data that is passed from in-progress component
 		private datepipe: DatePipe,
 	) {
 
@@ -41,6 +39,7 @@ export class DiscussionComponent implements OnInit {
 	}
 
 
+	// request state control to load message history for the work
 	ngOnInit(): void {
 		this.store.dispatch(new MessagesRequested(this.workID));
 		this.loadDiscussionHistory();
@@ -53,6 +52,8 @@ export class DiscussionComponent implements OnInit {
 
 	}
 
+	// submits a new message to the server
+	// the function is called when reviewer writes something in the textfield and then presses enter
 	submit(input: any) {
 		let msg = input.value;
 		input.value = '';
@@ -68,6 +69,7 @@ export class DiscussionComponent implements OnInit {
 		this.store.dispatch(new NewMessageCreated(newMessage));
 	}
 
+	// minimizes the discussion dialog box
 	close() {
 		this.dialogRef.close({event: 'close', data: 'close'});
 	}
