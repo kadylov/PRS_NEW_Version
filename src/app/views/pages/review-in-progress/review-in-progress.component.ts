@@ -18,12 +18,34 @@ export class ReviewInProgressComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.reviewInProgress$ = this.adminService.getAllAssignedWorks();
-	}
 
-	combineArrays(lhs: string[], rhs: string[]) {
-		let reviewers = {};
-		lhs.forEach((key, i) => reviewers[key] = rhs[i]);
-		return reviewers;
+		/* sample data in json is returned from the server below and stored in reviewInProgress$
+		[ {
+			WID: "35"
+			Title: "Prevalence of Articles With Honorary Authors and Ghost Authors in Peer-Reviewed Medical Journals"
+			URL: "https://jamanetwork.com/journals/jama/article-abstract/187772"
+			AuthorName: "Annette Flanagin, RN, MA; Lisa A. Carey, PhD;"
+			Reviewers: [ {
+							DueDate: "2019-11-21"
+							ReviewerID: "69"
+							ReviewerName: "Daug Williams"
+							Role: "Reviewer"
+						},
+						{
+							DueDate: "2019-11-21"
+							ReviewerID: "69"
+							ReviewerName: "Daug Williams"
+							Role: "Reviewer"
+						},
+						{...},
+						{...}
+						....
+					  ]
+			},
+			{...},
+			{...}
+		]
+		*
+		* */
 	}
-
 }

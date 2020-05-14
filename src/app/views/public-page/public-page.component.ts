@@ -10,6 +10,7 @@ import {Work} from '../../core/work/model/work';
 	styleUrls: ['./public-page.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
+// This component is for displaying all scored work for public view in table format
 export class PublicPageComponent implements OnInit, OnDestroy {
 	title: string = 'The Highest Scored Works';
 

@@ -14,10 +14,10 @@
 
 				</mat-expansion-panel-header>
 
-				<assigned-work-table [reviewers]="review.Reviewers"
-									 [workID]="review.WID"
-									 [showButton]="false"
-				></assigned-work-table>
+				<assigned-reviewers-table [reviewers]="review.Reviewers"
+                                          [workID]="review.WID"
+                                          [isForIncomingWork]="false"
+				></assigned-reviewers-table>
 
 			</mat-expansion-panel>
 		</mat-accordion>
@@ -26,7 +26,7 @@
 
 
 <ng-template #loadingMessage>
-	<div class="col-xl-12"></div><p class="text-center">Loading...</p>
+	<div class="col-xl-12"></div><p class="text-center">There are no reviews in progress</p>
 </ng-template>
 
 <div class="row">

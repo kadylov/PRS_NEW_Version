@@ -48,9 +48,8 @@ export class AdminService {
 
 	}
 
-	// get a list of reviewers who were not assigned
+	// get a list of reviewers who were not assigned to workID
 	public getReviewersForAssignment(workID: number): Observable<Reviewer[]> {
-		// console.log('aaaa', workID);
 		if (workID > 0) {
 			return this.http.get<Reviewer[]>(ADMIN_REQUEST, {
 				params: {

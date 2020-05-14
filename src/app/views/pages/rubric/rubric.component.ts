@@ -62,11 +62,12 @@ export class RubricComponent implements OnInit, OnDestroy {
 
 
 
+	// collects and submit modified rubrics by user to the server
 	submit() {
 
 		const controls = this.rubricForm.controls;
 
-		// check form
+		// validate user input
 		if (this.rubricForm.invalid) {
 			Object.keys(controls).forEach(controlName =>
 				controls[controlName].markAsTouched()
@@ -95,6 +96,7 @@ export class RubricComponent implements OnInit, OnDestroy {
 
 	}
 
+	// initialize form controls for the textfields
 	initForm() {
 		let group = {};
 		this.rubrics.forEach(r => {

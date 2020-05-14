@@ -10,17 +10,12 @@ import {
 } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 // Material
-import {SelectionModel} from '@angular/cdk/collections';
 import {MatPaginator, MatSort, MatSnackBar} from '@angular/material';
 // RXJS
-import {debounceTime, distinctUntilChanged, tap, skip, take, delay} from 'rxjs/operators';
-import {fromEvent, merge, Observable, of, Subscription} from 'rxjs';
-// LODASH
-import {each, find} from 'lodash';
-// NGRX
+import { Subscription} from 'rxjs';
 
 // Services
-import {LayoutUtilsService, MessageType, QueryParamsModel} from '../../../../../core/_base/crud';
+import {LayoutUtilsService, QueryParamsModel} from '../../../../../core/_base/crud';
 // Models
 import {SubheaderService} from '../../../../../core/_base/layout';
 import {UserManagementService} from '../../service/user-management.service';
@@ -101,40 +96,20 @@ export class UsersListComponent implements OnInit, OnDestroy {
 		this.subscriptions.forEach(sub => sub.unsubscribe());
 	}
 
+	// receive all role types(e.g. admin, reviewer, lead reviewer)
+	// and credential types (Academic, PhP, Practitioner, etc) from
+	// the server and store them in the session storage
+	// they are used for displaying in the select boxes on user add/edit page
 	getAllRolesAndCredentials() {
 		const subsc = this.roleCredentialService.getRolesAndCredentialsList()
 			.subscribe(respond => {
 
-					// console.log('loadcredds()', respond['roles']);
 					sessionStorage.setItem('roleCredential', JSON.stringify(respond));
 				},
 				error => console.log('There was an error while retrieving roles and credentials !!!' + error));
 
 		this.subscriptions.push(subsc);
 	}
-
-	deleteUser(_item: User1) {
-		const _title: string = 'User Delete';
-		const _description: string = 'Are you sure to permanently delete this user?';
-		const _waitDesciption: string = 'User is deleting...';
-		const _deleteMessage = `User has been deleted`;
-
-
-		const subsc = this.userManagementService.deleteUser(_item)
-			.subscribe(res => {
-					this.layoutUtilsService.showActionNotification(_deleteMessage);
-
-					this.dataSource.data = this.dataSource.data.filter(user => user.id !== _item.id);
-
-				},
-				error => {
-					console.log('Error ', error);
-					this.layoutUtilsService.showActionNotification('Unable to delete the user');
-				});
-		this.subscriptions.push(subsc);
-
-	}
-
 
 
 	/**
@@ -155,6 +130,8 @@ export class UsersListComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	// receives all the users of the system from the server
+	// and then display them on the table
 	private loadUsers() {
 		const subsc = this.userManagementService.getAllUsers()
 			.subscribe(respond => {
@@ -188,6 +165,9 @@ export class UsersListComponent implements OnInit, OnDestroy {
 		return _user;
 	}
 
+	// responds when user slides on of the slides on the table
+	// deactivates user if admin slides the slider to the left
+	// activates user if admin slides the slider to the right
 	slideChanged(event: any, user: User1) {
 		let checkedUser: User1 = this.prepareUser(user);
 

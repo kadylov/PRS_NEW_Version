@@ -1,13 +1,11 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {Reviewer, ReviewInProgressModel} from '../../../core/admin/_models/review-in-progress.model';
 import {AdminService} from '../../../core/admin/_services/admin.service';
 import {ReviewerToAssignComponent} from '../reviewersToAssign/reviewer-to-assign.component';
 import {DatePipe} from '@angular/common';
 import {MatDialog} from '@angular/material';
 import {LayoutUtilsService, MessageType} from '../../../core/_base/crud';
-import {EmailService} from '../../../core/email-notification/_services/email.service';
-import {Email} from '../../../core/email-notification/_models/email.model';
 
 
 @Component({
@@ -16,13 +14,12 @@ import {Email} from '../../../core/email-notification/_models/email.model';
 	styleUrls: ['./assignment1.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
+// Admin's Assignment page, where admin see a list of unassigned works
+// and assigns 5 or more reviewers for each unassigned work
 export class AssignmentComponent1 implements OnInit, OnDestroy {
-
 
 	reviewInProgress: ReviewInProgressModel[] = [];
 	currentDate: string;
-
-	selectedReviewer: Reviewer = null;
 
 	subscriptions: Subscription[] = [];
 
@@ -33,15 +30,15 @@ export class AssignmentComponent1 implements OnInit, OnDestroy {
 		private ref: ChangeDetectorRef,
 		private layoutUtilsService: LayoutUtilsService,
 		private adminService: AdminService,
-		private emailService: EmailService
 	) {
 
+		// receive a list of unassigned works from the server and store
+		// the server response to reviewInProgress object
 		let subsc = this.adminService.getUnassignedWorks().subscribe(
 			res => {
 				if (res) {
 					this.reviewInProgress = res;
 					this.ref.markForCheck();
-					// console.log(this.reviewInProgress);
 				}
 
 			}
@@ -59,28 +56,46 @@ export class AssignmentComponent1 implements OnInit, OnDestroy {
 	}
 
 
+	// opens up a dialog box with a list of reviewers to be assigned
 	addReviewer(revInProgress: any) {
 
-		let reviewerID = 0;
-		if (this.selectedReviewer != null) {
+		/* sample content of revInProgress parameter
 
-			reviewerID = this.selectedReviewer.ReviewerID;
-		}
+			AuthorEmail: "chen@nytimes.com"
+			AuthorName: "Julie Chen"
+			DateSubmission: "2020-05-04"
+			DateWritten: "2020-05-04"
+			IsRetired: "no"
+			Publish: "0"
+			Status: "admitted"
+			Title: "Costco is limiting how many steaks shoppers can buy."
+			URL: "https://www.nytimes.com/1232"
+			WID: "65",
+			Reviewers: []
+		 */
 
 		const dialogRef = this.dialog.open(ReviewerToAssignComponent, {
 			width: '1131px',
+
+
+			// if the user selected reviewer from the dialog box first time
+			// then 'reviewers' parameter will be passed as undefined
+			// else revInProgress.Reviewers will be passed to the dialog box
 			data: {
 				'reviewers': revInProgress.Reviewers,
 				'workID': revInProgress.WID,
 			},
 		});
 
+		// receives a selected reviewer along with the due date for the assignment from the dialog box (ReviewerToAssignComponent)
 		dialogRef.afterClosed().subscribe(result => {
 
-			if (result.data != undefined || result.data == 'close') {
+			if (result == undefined || result.data == 'close') {
 				return;
+
 			} else {
 
+				// prepare assigned reviewer object
 				const newAssignedReviewer = {
 					ReviewerID: result.assignment.reviewer.ReviewerID,
 					ReviewerName: result.assignment.reviewer.ReviewerName,
@@ -88,22 +103,9 @@ export class AssignmentComponent1 implements OnInit, OnDestroy {
 					DueDate: result.assignment.dueDate
 				};
 
-				const assignment = {
-					adminID: this.getAdminId(),
-					reviewerID: newAssignedReviewer.ReviewerID,
-					workID: revInProgress.WID,
-					dueDate: result.assignment.dueDate,
-					dateAssigned: this.currentDate
-				};
-
+				// add recently selected reviewer from the dialog box to the
+				// 'reviewInProgress' Reviewer list
 				this.addReviewerToList(revInProgress, newAssignedReviewer);
-
-				// this.subscriptions.push(this.adminService.assignReviewer(assignment).subscribe(
-				// 	res => {},
-				// 	error => {
-				// 		console.log('Error! Reviewer has not been added.');
-				// 	}
-				// ));
 
 			}
 
@@ -112,10 +114,12 @@ export class AssignmentComponent1 implements OnInit, OnDestroy {
 
 	private getAdminId() {
 		const user = JSON.parse(sessionStorage.getItem('user'));
-
 		return user.id;
 	}
 
+
+
+	// adds the new reviewer received from the dialog box to 'reviewInProgress' Reviewer list
 	addReviewerToList(work: ReviewInProgressModel, reviewer: Reviewer) {
 		this.reviewInProgress.map((rip: ReviewInProgressModel) => {
 			if (rip.WID === work.WID) {
@@ -123,32 +127,23 @@ export class AssignmentComponent1 implements OnInit, OnDestroy {
 				if (rip.Reviewers == undefined) {
 					rip.Reviewers = [];
 				}
+
+				// add all previosly added reviewers and the new reviewer to the list
 				rip.Reviewers = [...rip.Reviewers, reviewer];
 				this.ref.markForCheck();
-
-				this.selectedReviewer = reviewer;
-
-				console.log(this.reviewInProgress);
 				return;
 			}
 		});
 	}
 
 
-	combineArrays(lhs: string[], rhs: string[]) {
-		let reviewers = {};
-		lhs.forEach((key, i) => reviewers[key] = rhs[i]);
-		return reviewers;
-	}
-
 	updateReviewerList(reviewers: Reviewer[], review: ReviewInProgressModel) {
-
 		review.Reviewers = reviewers;
 		this.ref.markForCheck();
 
 	}
 
-	// submit selected reviewers and their due date for the work to the aserver
+	// submit selected reviewers and their due date for the work to the server
 	submitChanges(review: ReviewInProgressModel) {
 
 		// create assignment object
@@ -168,7 +163,9 @@ export class AssignmentComponent1 implements OnInit, OnDestroy {
 
 				this.displayConfirmationMessage('Reviewers have been assigned successfully.');
 			},
-			err=>{console.log(err);}
+			err => {
+				console.log(err);
+			}
 		));
 
 		this.hideAssignedWork(review);
@@ -176,7 +173,6 @@ export class AssignmentComponent1 implements OnInit, OnDestroy {
 
 	hideAssignedWork(work: ReviewInProgressModel) {
 		this.reviewInProgress = this.reviewInProgress.filter(r => r.WID != work.WID);
-		console.log(this.reviewInProgress);
 		this.ref.markForCheck();
 	}
 
@@ -184,30 +180,4 @@ export class AssignmentComponent1 implements OnInit, OnDestroy {
 		this.layoutUtilsService.showActionNotification(message, MessageType.Create, 5000, true, false);
 	}
 
-	private notifyReviewers(reviewers: Reviewer[]) {
-		const user = JSON.parse(sessionStorage.getItem('user'));
-
-		reviewers.forEach(reviewer=>{
-
-			let email: Email = {
-				senderName: 'admin',
-				senderEmail: user.Email,
-				recepientName: reviewer.ReviewerName,
-				recepientEmail: reviewer.Email,
-				subject: 'PRS: New Assignment',
-				message: 'Hello',
-				canReply: 0
-			};
-
-
-
-			// this.emailService.sendEmail(email);
-
-
-		});
-
-
-
-
-	}
 }

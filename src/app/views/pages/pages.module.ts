@@ -26,7 +26,6 @@ import {ThemeModule} from '../theme/theme.module';
 import {ReviewInProgressComponent} from './review-in-progress/review-in-progress.component';
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {AssignedListComponent} from './review-in-progress/assigned-works/assigned-work.component';
 import {ReviewerToAssignComponent} from './reviewersToAssign/reviewer-to-assign.component';
 import {LayoutUtilsService} from '../../core/_base/crud';
 import {ActionNotificationComponent} from '../partials/content/crud';
@@ -41,6 +40,7 @@ import {SummaryViewComponent} from './completed-review/summary-view/summary-view
 import {AuthGuard, Role} from '../../core/auth';
 import {WorkSummaryComponent} from './completed-review/work-summary-table/work-summary.component';
 import {SetThresholdComponent} from './set-threshold/set-threshold.component';
+import {AssignedReviewersTable} from './review-in-progress/assigned-reviewers-table/assigned-reviewers-table.component';
 
 const routes:Routes=[
 	{
@@ -131,7 +131,7 @@ const routes:Routes=[
 	declarations: [
 		CompletedReviewComponent,
 		ReviewInProgressComponent,
-		AssignedListComponent,
+		AssignedReviewersTable,
 		ReviewerToAssignComponent,
 		ExportImportDbComponent,
 		AssignmentComponent1,

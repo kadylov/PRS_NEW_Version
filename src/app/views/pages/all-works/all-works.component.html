@@ -43,16 +43,6 @@
 							<td mat-cell *matCellDef="let row">
 
 								<a href="javascript:;">{{row.Title}}</a>
-
-								<!--							<span class="d-flex flex-wrap mdc-chip-set" >-->
-								<!--								<span-->
-								<!--									*ngFor="let tag of row.Tags"-->
-								<!--									class="mdc-chip demo-chip-shaped">-->
-
-								<!--									<span class="mdc-chip__text">{{tag}}</span>-->
-								<!--								</span>-->
-								<!--							</span>-->
-								<!--						</td>-->
 						</ng-container>
 
 						<!-- AuthorName Column -->
@@ -79,6 +69,7 @@
 										[disabled]="row.Status!='scored'
 							 					&& row.Status!='rejected'
 							 					&& row.Status!='accepted'
+							 					&& row.Status!='completed'
 												&& row.Status!='denied'"
 
 										(click)="viewSummary(row)"

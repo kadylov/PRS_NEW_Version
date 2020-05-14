@@ -24,11 +24,6 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 	@ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 	@ViewChild(MatSort, {static: true}) sort: MatSort;
 
-
-	tagList = [];
-	selectable: boolean = false;
-	removable: boolean = false;
-
 	constructor(
 		private router: Router,
 		private adminService: AdminService,
@@ -51,6 +46,7 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 
 	}
 
+	// it is used in the search box
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 
@@ -60,6 +56,7 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 	}
 
 
+	// fetches all works from the server
 	loadWorks() {
 		const subsc = this.workService.getAllWorks()
 			.subscribe(
@@ -67,8 +64,6 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 					this.dataSource.data = res;
 					this.dataSource.sort = this.sort;
 					this.dataSource.paginator = this.paginator;
-					// console.log("AAAA");
-					// console.log(this.dataSource.data);
 				},
 				error => {
 					console.log('There was an error while retrieving Posts !!!' + error);
@@ -77,10 +72,9 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 		this.subscription.push(subsc);
 	}
 
+	// it is called when admin slides one of the works to be displayed on public page
 	slideChanged(event: MatSlideToggleChange, work: any) {
 		let checked: number;
-
-		// console.log('BEfore ', checkedUser.isActive);
 
 		if (event.checked) {
 			checked = 1;
@@ -99,9 +93,10 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 		this.subscription.push(subsc);
 	}
 
+	// redirects to work summary page based on work status
+	// if work status is 'denied' redirect to work summary page that will display admin pre-review (e.g.admin name, reject note)
+	// else redirect to work summary page that will display summary of the work
 	viewSummary(summary: Work) {
-
-
 		if (summary.Status === 'denied') {
 			const subsc = this.adminService.getAdminReview(summary.WID).subscribe(
 				res => {
@@ -171,7 +166,7 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 
 	}
 
-
+	// displays tooltip on view button
 	showBtnToolTip(status: any) {
 		if (status == 'assigned' || status == 'reviewed') {
 			return 'Work Summary has not been generated yet';
@@ -180,6 +175,7 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	// displays tooltip on the work status
 	showStatusToolTip(status: any) {
 		switch (status) {
 			case 'rejected':
@@ -191,7 +187,7 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 			case 'reviewed':
 				return 'Assigned lead reviewer has not generated summary yet';
 
-			case 'accepted':
+			case 'completed':
 				return 'Admin accepted work';
 			case 'scored':
 				return 'Assigned reviewers reviewed and scored the work';
@@ -204,6 +200,7 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	// displays tooltip on the sliders
 	showSliderToolTip(work: Work) {
 
 		if (work.Publish == 1) {
@@ -217,11 +214,6 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 		} else {
 			return 'Unpublished work';
 		}
-
-	}
-
-
-	private prepare_pre_review(work: Work) {
 
 	}
 }

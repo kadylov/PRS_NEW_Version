@@ -1,11 +1,9 @@
 // Angular
-import {Component, OnInit, OnDestroy, Input, EventEmitter} from '@angular/core';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 // RxJS
-import {BehaviorSubject, Observable, of, Subscription} from 'rxjs';
-// NGRX
-import {Update} from '@ngrx/entity';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 // Layout
 import {SubheaderService, LayoutConfigService} from '../../../../../core/_base/layout';
 import {LayoutUtilsService, MessageType} from '../../../../../core/_base/crud';
@@ -24,7 +22,6 @@ import {Credential} from '../../Model/Credential';
 export class UserEditComponent implements OnInit, OnDestroy {
 	// Public properties
 	user: User1;
-	userId$: Observable<number>;
 	oldUser: User1;
 	selectedTab: number = 0;
 	loading$: Observable<boolean>;
@@ -32,7 +29,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
 	userForm: FormGroup;
 	hasFormErrors: boolean = false;
 
-	// credentialsIdForAdding = "Academic";
 	credentialsIdForAdding: number;
 	roleIdForAdding: number;
 
@@ -44,8 +40,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
 	private subscriptions: Subscription[] = [];
 
 	private mainUrl = '/admin/user-management/users';
-
-	// @Input() userToEdit;
 
 
 	/**
@@ -78,6 +72,9 @@ export class UserEditComponent implements OnInit, OnDestroy {
 		this.credentials = roleCredential['credentials'];
 		this.roles = roleCredential['roles'];
 
+		// check if this page is loaded for user edit or user create
+		// if user id is passed to the route, then load user information to the form
+		// else leave those forms empty
 		const routeSubscription = this.activatedRoute.params.subscribe(params => {
 			const id = params['id'];
 			if (id && id >= 0) {
@@ -95,7 +92,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
 			} else {
 				this.user = new User1();
 				this.user.clear();
-				// this.rolesSubject.next(this.user.role);
 				this.oldUser = Object.assign({}, this.user);
 				this.initUser();
 			}
@@ -203,7 +199,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
 		_user.roleId = controls['role'].value;
 
 		_user.credentialID = this.credentialsIdForAdding;
-		// _user.roleId = this.roleIdForAdding;
 
 		return _user;
 	}

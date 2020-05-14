@@ -39,8 +39,9 @@ export class ExportImportDbComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 
+		// display alert (toaster) notification for 2 seconds
+		// after one of the two buttons (upload or download) triggers event
 		this._success.subscribe(msg => this.confMsg = msg);
-
 		this._success.pipe(
 			debounceTime(2000)
 		).subscribe(() => {
@@ -63,9 +64,6 @@ export class ExportImportDbComponent implements OnInit, OnDestroy {
 					this.ref.markForCheck();
 					saveAs(res, backup_file_name);
 				},
-				res => {
-					// notify error
-				}
 			);
 
 		this.subscribtions.push(sub);
@@ -73,6 +71,8 @@ export class ExportImportDbComponent implements OnInit, OnDestroy {
 	}
 
 
+	// enables upload button after user chooses the backup sql file
+	// from the user's local computer
 	fileChange(fileSelected: any) {
 		if (fileSelected.target.files.length > 0) {
 			this.file = <File> fileSelected.target.files[0];
@@ -82,6 +82,8 @@ export class ExportImportDbComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	// uploads the chosen sql file to the server
+	// and triggers alert(toaster) notification
 	upload() {
 		if (this.file != null) {
 			this.uploading = true;

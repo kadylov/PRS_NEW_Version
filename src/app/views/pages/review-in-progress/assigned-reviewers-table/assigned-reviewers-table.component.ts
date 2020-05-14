@@ -18,19 +18,20 @@ import {LayoutUtilsService, MessageType} from '../../../../core/_base/crud';
 
 
 @Component({
-		selector: 'assigned-work-table',
-		templateUrl: './assigned-work.component.html',
-		styleUrls: ['assigned-work.component.scss'],
+		selector: 'assigned-reviewers-table',
+		templateUrl: './assigned-reviewers-table.component.html',
+		styleUrls: ['assigned-reviewers-table.component.scss'],
 	}
 )
-export class AssignedListComponent implements OnInit, DoCheck, OnDestroy {
+
+// This component is for displaying in table format the selected reviewers from the dialog box
+export class AssignedReviewersTable implements OnInit, DoCheck, OnDestroy {
 	dataSource: MatTableDataSource<Reviewer>;
 	displayedColumns = ['id', 'Reviewer', 'Role', 'DueDate', 'Status', 'Action'];
 
 	@Input() reviewers: Reviewer[];
 	@Input() workID: number;
-	// @Input() dataSource1: MatTableDataSource<Reviewer>;
-	@Input() showButton: boolean = false;
+	@Input() isForIncomingWork: boolean = false;
 
 	@Output() updatedReviewerList = new EventEmitter<Reviewer[]>();
 
@@ -64,6 +65,11 @@ export class AssignedListComponent implements OnInit, DoCheck, OnDestroy {
 		}
 	}
 
+	/**
+	 * Returns reviewer assignment status by checking due date with today's date
+	 *
+	 * @param reviewDue: string
+	 */
 	getItemStatusString(reviewDue: string = ''): string {
 		if (reviewDue < this.currentDate) {
 			return 'overdue';
@@ -91,26 +97,29 @@ export class AssignedListComponent implements OnInit, DoCheck, OnDestroy {
 	}
 
 
-	switchUser(reviewer: any) {
-		const reviewerToSwap = reviewer;
+	// switches reviewer whose assignment is over due with a new reviewer
+	// recieves the selected reviewer from the table and
+	// pass the reviewer to ReviewerToAssignComponent dialog box before opening the dialog up
+	// this function is called when user is on review-in-progress' component
+	switchUser(reviewerToSwap: any) {
 
+		let oldReviewer = reviewerToSwap;
 		const dialogRef = this.dialog.open(ReviewerToAssignComponent, {
 			width: '1131px',
 			data: {
-				'reviewers': [reviewer],
+				'reviewers': [this.reviewers],
 				'workID': this.workID
 			},
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
-			if (result.data == 'close') {
+			if (result == undefined || result.data == 'close') {
 				return;
 			} else {
 
 				// first, deactivate reviewer whose assignment is overdue
-				// and then swap the deactivated reviewer with the selected reviewer from the dialogbox
+				// and then swap the deactivated reviewer with the selected reviewer from the dialog box
 				this.deactivateUserByIdFromAssignment(reviewerToSwap.ReviewerID, this.workID);
-
 				const newAssignedReviewer = {
 					ReviewerID: result.assignment.reviewer.ReviewerID,
 					ReviewerName: result.assignment.reviewer.ReviewerName,
@@ -118,6 +127,7 @@ export class AssignedListComponent implements OnInit, DoCheck, OnDestroy {
 					DueDate: result.assignment.dueDate
 				};
 
+				// create a new assignment object for the newly selectected reviewer from dialog box
 				const assignment = {
 					adminID: this.getAdminId(),
 					reviewerID: newAssignedReviewer.ReviewerID,
@@ -126,12 +136,16 @@ export class AssignedListComponent implements OnInit, DoCheck, OnDestroy {
 					dateAssigned: this.currentDate
 				};
 
+				// submit new assignment for the newly assigned reviewer to the server
+				// and then display a confirmation message to the screen
 				this.subscriptions.push(this.adminService.assignReviewer(assignment).subscribe(
-					res => {
-						this.updateRowData(reviewerToSwap, newAssignedReviewer);
+					() => {
+						this.updateReviewerTable(oldReviewer, newAssignedReviewer);
 						this.displayConfirmationMessage();
 					}
 				));
+
+
 			}
 		});
 	}
@@ -148,7 +162,7 @@ export class AssignedListComponent implements OnInit, DoCheck, OnDestroy {
 	}
 
 
-	private updateRowData(reviewer, newReviewer) {
+	private updateReviewerTable(reviewer, newReviewer) {
 
 		this.reviewers = this.reviewers.filter(r =>
 			r.ReviewerID !== reviewer.ReviewerID
@@ -167,6 +181,9 @@ export class AssignedListComponent implements OnInit, DoCheck, OnDestroy {
 	}
 
 
+	// this function is used on incoming works component wherer user can swap recently selected
+	// from the dialog box with another reviewer after clicking on "Switch reviewer" button and
+	// select the new reviewer
 	reassignReviewer(reviewer: any) {
 		const reviewerToSwap = reviewer;
 
@@ -189,7 +206,7 @@ export class AssignedListComponent implements OnInit, DoCheck, OnDestroy {
 					Role: result.assignment.reviewer.Role,
 					DueDate: result.assignment.dueDate
 				};
-				this.updateRowData(reviewerToSwap, newAssignedReviewer);
+				this.updateReviewerTable(reviewerToSwap, newAssignedReviewer);
 
 			}
 

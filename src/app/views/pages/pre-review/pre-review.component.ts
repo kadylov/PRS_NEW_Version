@@ -71,28 +71,31 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 	// it is called when admin clicks on "submit" button
 	submit() {
 
-		// validate user input
+		// validate user input (radio buttons)
 		if (this.decision.invalid) {
 			this.decision.markAllAsTouched();
 			return;
 		}
 
+		// validate user input (message field) after user clicks on one of
+		// the decision radio buttons
 		if (this.rejectNote.invalid && this.decision.value == 'denied') {
 			this.rejectNote.markAllAsTouched();
 			return;
 		}
 
-
+		// collect user input from the message field
 		let rejectNote = this.rejectNote.value;
 
 		if (this.decision.value != 'denied') {
 			rejectNote = '';
 		}
 
-
+		// prepare pre-review object for submission
 		let preReview = this.generatePreReview(rejectNote);
 		if (preReview) {
 
+			// submit the pre-review to the server
 			const subsc1 = this.adminService.submitPreReview(preReview).subscribe(
 				() => {
 
@@ -113,6 +116,7 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	// prepares and returns pre-review object
 	private generatePreReview(rejectNote: string) {
 		if (this.admin == undefined) {
 			return;
@@ -137,6 +141,7 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 		this.snackBar.open(message, '', config);
 	}
 
+	// clears the users form to default state
 	public clearForm() {
 		this.decision.clearValidators();
 		this.decision.updateValueAndValidity();
@@ -147,6 +152,7 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	// creates work status email for author
 	private createWorkStatusEmail(): Email {
 		let decicion: string = 'has been submitted for further review';
 

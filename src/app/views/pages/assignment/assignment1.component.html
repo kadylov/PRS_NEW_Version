@@ -15,14 +15,19 @@
 
 				</mat-expansion-panel-header>
 
-				<assigned-work-table
+				<!--
+
+				display a list of selected reviewers in the table
+				ID	Reviewer	Role	Due Date	Status	Action -->
+				<assigned-reviewers-table
 					[reviewers]="review.Reviewers"
 					[workID]="review.WID"
-					[showButton]="true"
+					[isForIncomingWork]="true"
 					(updatedReviewerList)="updateReviewerList($event, review)"
-				></assigned-work-table>
+				></assigned-reviewers-table>
 
 
+				<!-- buttons 'Add Reviewer' and 'Submit Changes'-->
 				<div class="mt-4 d-flex justify-content-center">
 					<div class="">
 						<button class=" btn btn-primary" (click)="addReviewer(review)">Add Reviewer</button>
