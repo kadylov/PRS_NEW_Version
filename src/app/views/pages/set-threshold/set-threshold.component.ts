@@ -1,9 +1,9 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
-import {AdminService} from '../../../../core/admin/_services/admin.service';
 import {Location} from '@angular/common';
 import {Subscription} from 'rxjs';
-import {LayoutUtilsService, MessageType} from '../../../../core/_base/crud';
+import {LayoutUtilsService, MessageType} from '../../../core/_base/crud';
+import {AdminService} from '../../../core/admin/_services/admin.service';
 
 @Component({
 	selector: 'kt-set-threshold',

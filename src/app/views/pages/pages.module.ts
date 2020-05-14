@@ -9,8 +9,6 @@ import { PartialsModule } from '../partials/partials.module';
 import { CoreModule } from '../../core/core.module';
 
 import { UserManagementModule } from './user-management/user-management.module';
-import { IncomingWorkComponent } from './admin/incoming-work/incoming-work.component';
-import { ScorecardComponent } from './admin/scorecard/scorecard.component';
 
 import {
     MatButtonModule, MatDatepickerModule, MatDialogModule,
@@ -41,8 +39,8 @@ import {RubricComponent} from './rubric/rubric.component';
 import {CompletedReviewComponent} from './completed-review/completed-review.component';
 import {SummaryViewComponent} from './completed-review/summary-view/summary-view.component';
 import {AuthGuard, Role} from '../../core/auth';
-import {SetThresholdComponent} from './admin/set-threshold/set-threshold.component';
 import {WorkSummaryComponent} from './completed-review/work-summary-table/work-summary.component';
+import {SetThresholdComponent} from './set-threshold/set-threshold.component';
 
 const routes:Routes=[
 	{
@@ -56,12 +54,6 @@ const routes:Routes=[
 			},
 
 			{
-				path: 'incoming-work',
-				component: IncomingWorkComponent,
-				canActivate: [AuthGuard],
-				data: { roles: [Role.Admin] }
-			},
-			{
 				path: 'assignment',
 				component: AssignmentComponent1,
 				canActivate: [AuthGuard],
@@ -73,12 +65,6 @@ const routes:Routes=[
 				canActivate: [AuthGuard],
 				data: { roles: [Role.Admin] }
 
-			},
-			{
-				path: 'scorecard',
-				component: ScorecardComponent,
-				canActivate: [AuthGuard],
-				data: { roles: [Role.Admin] }
 			},
 			{
 				path: 'review-in-progress',
@@ -143,8 +129,6 @@ const routes:Routes=[
 
 @NgModule({
 	declarations: [
-		IncomingWorkComponent,
-		ScorecardComponent,
 		CompletedReviewComponent,
 		ReviewInProgressComponent,
 		AssignedListComponent,

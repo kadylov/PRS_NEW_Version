@@ -34,9 +34,6 @@ export { TimeElapsedPipe } from './pipes/time-elapsed.pipe';
 export {CustomSortPipe} from './pipes/custom-sort.pipe';
 
 // Services
-export { DataTableService } from './services/datatable.service';
-export { TranslationService } from './services/translation.service';
-
 export { LayoutConfigService } from './services/layout-config.service';
 export { LayoutRefService } from './services/layout-ref.service';
 export { MenuAsideService } from './services/menu-aside.service';
@@ -49,7 +46,3 @@ export { KtDialogService } from './services/kt-dialog.service';
 
 // work service
 export { DataTableWorkService } from './services/datatable-work.service';
-
-
-// Server
-// export { FakeApiService } from './server/fake-api/fake-api.service';

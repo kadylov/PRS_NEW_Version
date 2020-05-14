@@ -1,4 +1,3 @@
-import {AfterViewInit, AfterViewChecked} from '@angular/core';
 // Angular
 import {
 	Component,
@@ -23,14 +22,6 @@ import {each, find} from 'lodash';
 // Services
 import {LayoutUtilsService, MessageType, QueryParamsModel} from '../../../../../core/_base/crud';
 // Models
-import {
-	User,
-	// Role,
-	// UserDeleted,
-	// UsersPageRequested,
-	// selectUserById,
-	// selectAllRoles
-} from '../../../../../core/auth';
 import {SubheaderService} from '../../../../../core/_base/layout';
 import {UserManagementService} from '../../service/user-management.service';
 import {MatTableDataSource} from '@angular/material/table';
@@ -68,8 +59,6 @@ export class UsersListComponent implements OnInit, OnDestroy {
 	// Filter fields
 	@ViewChild('searchInput', {static: true}) searchInput: ElementRef;
 	lastQuery: QueryParamsModel;
-	// Selection
-	selection = new SelectionModel<User>(true, []);
 
 	// Subscriptions
 	private subscriptions: Subscription[] = [];
@@ -130,18 +119,6 @@ export class UsersListComponent implements OnInit, OnDestroy {
 		const _waitDesciption: string = 'User is deleting...';
 		const _deleteMessage = `User has been deleted`;
 
-		// const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDesciption);
-		// dialogRef.afterClosed().subscribe(res => {
-		// 	if (!res) {
-		// 		return;
-		// 	}
-		//
-		// 	this.userManagementService.deleteUser(_item);
-		//
-		// 	// this.store.dispatch(new UserDeleted({id: _item.id}));
-		// 	this.layoutUtilsService.showActionNotification(_deleteMessage, MessageType.Delete);
-		// });
-
 
 		const subsc = this.userManagementService.deleteUser(_item)
 			.subscribe(res => {
@@ -159,19 +136,6 @@ export class UsersListComponent implements OnInit, OnDestroy {
 	}
 
 
-	/*
-	* @param user: User
-	*/
-	getUserRolesStr(user: User): string {
-		const titles: string[] = [];
-		// each(user.roles, (roleId: number) => {
-		// 	const _role = find(this.allRoles, (role: Role) => role.id === roleId);
-		// 	if (_role) {
-		// 		titles.push(_role.title);
-		// 	}
-		// });
-		return titles.join(', ');
-	}
 
 	/**
 	 * Redirect to edit page
@@ -227,15 +191,10 @@ export class UsersListComponent implements OnInit, OnDestroy {
 	slideChanged(event: any, user: User1) {
 		let checkedUser: User1 = this.prepareUser(user);
 
-		// console.log('BEfore ', checkedUser.isActive);
-
 		if (event.checked) {
-			// console.log('Checked ', event.checked);
 			checkedUser.isActive = 1;
 		} else {
-			// console.log('Unchecked ', event.checked);
 			checkedUser.isActive = 0;
-			// console.log(checkedUser.isActive);
 		}
 
 		const subsc = this.userManagementService.deactivateUser(checkedUser)
@@ -244,7 +203,6 @@ export class UsersListComponent implements OnInit, OnDestroy {
 						this.layoutUtilsService.showActionNotification_(`User has been activated`);
 					} else {
 						this.layoutUtilsService.showActionNotification_(`User has been deactivated`);
-
 					}
 
 				},

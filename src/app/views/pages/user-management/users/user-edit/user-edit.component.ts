@@ -12,9 +12,6 @@ import {LayoutUtilsService, MessageType} from '../../../../../core/_base/crud';
 import {UserManagementService} from '../../service/user-management.service';
 
 // Services and Models
-import {
-	User,
-} from '../../../../../core/auth';
 import {User1} from '../../../../../core/auth/_models/user1.model';
 import {Role} from '../../Model/Role';
 import {Credential} from '../../Model/Credential';

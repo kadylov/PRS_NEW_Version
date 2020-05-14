@@ -4,11 +4,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-// NGRX
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-// Translate
-import { TranslateModule } from '@ngx-translate/core';
 import { PartialsModule } from '../../partials/partials.module';
 // Services
 import { HttpUtilsService, TypesUtilsService, InterceptService, LayoutUtilsService} from '../../../core/_base/crud';
@@ -45,8 +40,7 @@ import {
 	MatTooltipModule, MatSlideToggleModule
 } from '@angular/material';
 import {
-	usersReducer,
-	UserEffects, AuthGuard, Role
+	AuthGuard, Role
 } from '../../../core/auth';
 import {UserManagementService} from './service/user-management.service';
 import {RoleCredentialService} from './service/role-credential.service';
@@ -108,11 +102,8 @@ const routes: Routes = [
         HttpClientModule,
         PartialsModule,
         RouterModule.forChild(routes),
-        StoreModule.forFeature('users', usersReducer),
-        EffectsModule.forFeature([UserEffects]),
         FormsModule,
         ReactiveFormsModule,
-        TranslateModule.forChild(),
         MatButtonModule,
         MatMenuModule,
         MatSelectModule,
@@ -162,7 +153,6 @@ const routes: Routes = [
 	],
 	entryComponents: [
 		ActionNotificationComponent,
-		// RoleEditDialogComponent
 	],
 	declarations: [
 		UserManagementComponent,

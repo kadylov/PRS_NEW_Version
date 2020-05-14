@@ -1,7 +1,7 @@
 // Angular
 import { Component, ElementRef, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 // Layout
-import { LayoutConfigService, TranslationService } from '../../core/_base/layout';
+import { LayoutConfigService } from '../../core/_base/layout';
 // Auth
 import { AuthNoticeService } from '../../core/auth';
 
@@ -30,7 +30,6 @@ export class AuthComponent implements OnInit {
 		private render: Renderer2,
 		private layoutConfigService: LayoutConfigService,
 		public authNoticeService: AuthNoticeService,
-		private translationService: TranslationService
 		) {
 	}
 

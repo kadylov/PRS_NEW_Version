@@ -38,8 +38,6 @@ import { CoreModule } from './core/core.module';
 import { PartialsModule } from './views/partials/partials.module';
 // Layout Services
 import {
-	DataTableService,
-	// FakeApiService,
 	KtDialogService,
 	LayoutConfigService,
 	LayoutRefService,
@@ -144,7 +142,6 @@ export function hljsLanguages(): HighlightLanguage[] {
 		MenuConfigService,
 		PageConfigService,
 		KtDialogService,
-		DataTableService,
 		DataTableWorkService,
 
 		{

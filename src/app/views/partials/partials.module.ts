@@ -41,26 +41,9 @@ import {
 } from './content/crud';
 // Layout partials
 import {
-	ContextMenu2Component,
-	ContextMenuComponent,
-	LanguageSelectorComponent,
-	NotificationComponent,
-	QuickActionComponent,
-	QuickPanelComponent,
 	ScrollTopComponent,
-	SearchDefaultComponent,
-	SearchDropdownComponent,
-	SearchResultComponent,
 	SplashScreenComponent,
-	StickyToolbarComponent,
 	Subheader1Component,
-	Subheader2Component,
-	Subheader3Component,
-	Subheader4Component,
-	Subheader5Component,
-	SubheaderSearchComponent,
-	UserProfile2Component,
-	UserProfile3Component,
 	UserProfileComponent,
 } from './layout';
 // General
@@ -68,11 +51,8 @@ import {NoticeComponent} from './content/general/notice/notice.component';
 import {PortletModule} from './content/general/portlet/portlet.module';
 // Errpr
 import {ErrorComponent} from './content/general/error/error.component';
-// Extra module
-// import {WidgetModule} from './content/widgets/widget.module';
 // SVG inline
 import {InlineSVGModule} from 'ng-inline-svg';
-import {CartComponent} from './layout/topbar/cart/cart.component';
 
 @NgModule({
 	declarations: [
@@ -85,33 +65,14 @@ import {CartComponent} from './layout/topbar/cart/cart.component';
 		AlertComponent,
 
 		// topbar components
-		ContextMenu2Component,
-		ContextMenuComponent,
-		QuickPanelComponent,
 		ScrollTopComponent,
-		SearchResultComponent,
 		SplashScreenComponent,
-		StickyToolbarComponent,
 		Subheader1Component,
-		Subheader2Component,
-		Subheader3Component,
-		Subheader4Component,
-		Subheader5Component,
-		SubheaderSearchComponent,
-		LanguageSelectorComponent,
-		NotificationComponent,
-		QuickActionComponent,
-		SearchDefaultComponent,
-		SearchDropdownComponent,
 		UserProfileComponent,
-		UserProfile2Component,
-		UserProfile3Component,
-		CartComponent,
 
 		ErrorComponent,
 	],
 	exports: [
-		// WidgetModule,
 		PortletModule,
 
 		ScrollTopComponent,
@@ -123,28 +84,10 @@ import {CartComponent} from './layout/topbar/cart/cart.component';
 		AlertComponent,
 
 		// topbar components
-		ContextMenu2Component,
-		ContextMenuComponent,
-		QuickPanelComponent,
 		ScrollTopComponent,
-		SearchResultComponent,
 		SplashScreenComponent,
-		StickyToolbarComponent,
 		Subheader1Component,
-		Subheader2Component,
-		Subheader3Component,
-		Subheader4Component,
-		Subheader5Component,
-		SubheaderSearchComponent,
-		LanguageSelectorComponent,
-		NotificationComponent,
-		QuickActionComponent,
-		SearchDefaultComponent,
-		SearchDropdownComponent,
 		UserProfileComponent,
-		UserProfile2Component,
-		UserProfile3Component,
-		CartComponent,
 
 		ErrorComponent,
 	],
