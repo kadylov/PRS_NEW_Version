@@ -23,11 +23,13 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 	admin: User1;
 
 	safeUrl: SafeUrl;
-	loading: boolean = true;
-	isFullscreen: boolean = false;
+	loading: boolean = true;					// used for loading animation while work url is loading in iframe
+	isFullscreen: boolean = false;				// flag for determining work material is open up in fullscreen
 
 	subscribtion: Subscription[]=[];
 
+	// form controls for radio buttons for making decicion
+	// and message box for writing reject note
 	decision: FormControl = new FormControl('', Validators.required);
 	rejectNote: FormControl = new FormControl('', Validators.required);
 
@@ -38,6 +40,7 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 				private emailService: EmailService,
 				private adminService: AdminService) {
 
+		// get material for pre-review(e.g. work title, url, etc)
 		this.work = JSON.parse(sessionStorage.getItem('workForAdmReview'));
 		this.admin = JSON.parse(sessionStorage.getItem('user'));
 
@@ -64,7 +67,11 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 		sessionStorage.removeItem('workForAdmReview');
 	}
 
+	// submits admin pre-review to the server
+	// it is called when admin clicks on "submit" button
 	submit() {
+
+		// validate user input
 		if (this.decision.invalid) {
 			this.decision.markAllAsTouched();
 			return;
@@ -96,6 +103,7 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 
 					this.subscribtion.push(subsc1);
 					this.subscribtion.push(subsc2);
+
 					this.router.navigateByUrl('admin/assignment');
 				},
 				error => {

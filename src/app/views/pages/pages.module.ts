@@ -10,7 +10,6 @@ import { CoreModule } from '../../core/core.module';
 
 import { UserManagementModule } from './user-management/user-management.module';
 import { IncomingWorkComponent } from './admin/incoming-work/incoming-work.component';
-import { AssignmentComponent } from './admin/assignment/assignment.component';
 import { ScorecardComponent } from './admin/scorecard/scorecard.component';
 
 import {
@@ -26,7 +25,6 @@ import {
 import {RouterModule, Routes} from '@angular/router';
 import {BaseComponent} from '../theme/base/base.component';
 import {ThemeModule} from '../theme/theme.module';
-import {IncomingDatatable} from './admin/incoming-datatable/incomingDatatable.component';
 import {ReviewInProgressComponent} from './review-in-progress/review-in-progress.component';
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -82,11 +80,6 @@ const routes:Routes=[
 				canActivate: [AuthGuard],
 				data: { roles: [Role.Admin] }
 			},
-			// {
-			// 	path: 'result',
-			// 	component: ResultComponent
-			// },
-
 			{
 				path: 'review-in-progress',
 				component: ReviewInProgressComponent,
@@ -151,10 +144,8 @@ const routes:Routes=[
 @NgModule({
 	declarations: [
 		IncomingWorkComponent,
-		AssignmentComponent,
 		ScorecardComponent,
 		CompletedReviewComponent,
-		IncomingDatatable,
 		ReviewInProgressComponent,
 		AssignedListComponent,
 		ReviewerToAssignComponent,
