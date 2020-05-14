@@ -11,6 +11,7 @@ import { AuthNoticeService } from '../../core/auth';
 	styleUrls: ['./auth.component.scss'],
 	encapsulation: ViewEncapsulation.None
 })
+// this component is responsible for displaying left panel of login screen
 export class AuthComponent implements OnInit {
 	// Public properties
 	today: number = Date.now();
@@ -23,7 +24,6 @@ export class AuthComponent implements OnInit {
 	 * @param render
 	 * @param layoutConfigService: LayoutConfigService
 	 * @param authNoticeService: authNoticeService
-	 * @param translationService: TranslationService
 	 */
 	constructor(
 		private el: ElementRef,
@@ -41,9 +41,6 @@ export class AuthComponent implements OnInit {
 	 * On init
 	 */
 	ngOnInit(): void {
-		// this.translationService.setLanguage(this.translationService.getSelectedLanguage());
-		// this.headerLogo = this.layoutConfigService.getLogo();
-
 	}
 
 	/**

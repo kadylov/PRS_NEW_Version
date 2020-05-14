@@ -20,7 +20,6 @@ import {
 	ToggleDirective
 } from './_base/layout';
 import {AdminService} from './admin/_services/admin.service';
-import {TitleCheckerDirective} from './admin/directives/title-checker.directive';
 import {EmailService} from './email-notification/_services/email.service';
 import {FileBackupService} from './file-service/file-backup.service';
 import {RubricService} from './rubric/_service/rubric.service';
@@ -45,7 +44,6 @@ import {RubricService} from './rubric/_service/rubric.service';
 		SafePipe,
 		FirstLetterPipe,
 		CustomSortPipe,
-		TitleCheckerDirective
 	],
 	exports: [
 		// directives
@@ -66,7 +64,6 @@ import {RubricService} from './rubric/_service/rubric.service';
 		FirstLetterPipe,
 		CustomSortPipe,
 
-		TitleCheckerDirective
 	],
 	providers: [AdminService, EmailService, FileBackupService, RubricService]
 })

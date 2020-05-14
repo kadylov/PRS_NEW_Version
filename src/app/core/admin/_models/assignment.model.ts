@@ -5,3 +5,4 @@ export class AssignmentModel {
 	AuthorName: string;
 
 }
+

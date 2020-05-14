@@ -1,5 +1,14 @@
 // Angular
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+	AfterViewInit,
+	ChangeDetectionStrategy,
+	Component,
+	ElementRef,
+	OnDestroy,
+	OnInit,
+	ViewChild,
+	ViewEncapsulation
+} from '@angular/core';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthNoticeService} from '../../../core/auth';
@@ -10,18 +19,15 @@ import {Work} from '../model/work';
 import {DatePipe} from '@angular/common';
 import {WorkService} from '../service/work.service';
 
-export class SelectedTag {
-	title: string;
-
-}
 
 @Component({
 	selector: 'kt-submission',
 	templateUrl: './submission-form.component.html',
 	styleUrls: ['./submission-form.component.scss'],
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SubmissionFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SubmissionFormComponent implements OnInit, OnDestroy {
 
 	@ViewChild('title', {static: true}) titleField: ElementRef;
 
@@ -52,7 +58,6 @@ export class SubmissionFormComponent implements OnInit, AfterViewInit, OnDestroy
 	 * @param authNoticeService: AuthNoticeService
 	 * @param router: Router
 	 * @param fb: FormBuilder
-	 * @param tagService
 	 * @param snackBar
 	 */
 	constructor(
@@ -71,19 +76,11 @@ export class SubmissionFormComponent implements OnInit, AfterViewInit, OnDestroy
 	 */
 	ngOnInit() {
 
-		// this.tags$ = this.tagService.getAllTags();
+		// load tags for work from the server
 		this.tags$ = this.workService.getAllTags();
 
-		this.initRegisterForm();
+		this.initSubmissionForm();
 
-		// this.titleField.nativeElement.focus();
-
-	}
-
-	ngAfterViewInit() {
-		// setTimeout(() => {
-		// 	// this.titleField.nativeElement.focus();
-		// }, 3000);
 	}
 
 	/*
@@ -101,7 +98,7 @@ export class SubmissionFormComponent implements OnInit, AfterViewInit, OnDestroy
 	 * Form initalization
 	 * Default params, validators
 	 */
-	initRegisterForm() {
+	initSubmissionForm() {
 		this.registerForm = this.fb.group({
 			title: ['', Validators.compose([
 				Validators.required,
@@ -165,7 +162,9 @@ export class SubmissionFormComponent implements OnInit, AfterViewInit, OnDestroy
 
 
 	/**
-	 * Form Submit
+	 * Collects author data from the submission forms,
+	 * validates them and submit them to the server
+	 * and display a confirmation message
 	 */
 	submit() {
 		this.loading = true;
@@ -182,6 +181,7 @@ export class SubmissionFormComponent implements OnInit, AfterViewInit, OnDestroy
 			return;
 		}
 
+		// prepare work model for submission
 		let work: Work = new Work();
 		work.Title = controls['title'].value;
 		work.DateWritten = this.datepipe.transform(controls['date_written'].value, 'yyyyMMddHHmmss');
@@ -190,6 +190,7 @@ export class SubmissionFormComponent implements OnInit, AfterViewInit, OnDestroy
 		work.AuthorName = controls['author'].value;
 		work.AuthorEmail = controls['email'].value;
 
+		// get  author selected tags from the submission form
 		let tags: string[] = [];
 		for (let i = 1; i <= 7; i++) {
 			let tag = controls['tag' + i].value;
@@ -203,6 +204,9 @@ export class SubmissionFormComponent implements OnInit, AfterViewInit, OnDestroy
 		const message = 'Your Work has been submitted successfully!';
 
 
+		// submit author work to the server
+		// if no error, display confirmation message
+		// otherwise, dispay an error message to the screen
 		this.sub = this.workService.submit(work).subscribe(
 			res => {
 				this.loading = false;
@@ -217,7 +221,6 @@ export class SubmissionFormComponent implements OnInit, AfterViewInit, OnDestroy
 				return;
 			}
 		);
-		// this.displaySnackBar(message);
 
 	}
 
@@ -231,6 +234,7 @@ export class SubmissionFormComponent implements OnInit, AfterViewInit, OnDestroy
 
 	}
 
+	// displays confirmation message to the screen
 	displaySnackBar(message: string) {
 		let config = new MatSnackBarConfig();
 		config.duration = 5000;
@@ -253,6 +257,7 @@ export class SubmissionFormComponent implements OnInit, AfterViewInit, OnDestroy
 		return result;
 	}
 
+	// this function is called when author clicks on one of the selected tags
 	remove(title: any, tag?: any): void {
 
 		this.chips = this.chips.filter(c => c !== title);
@@ -319,11 +324,6 @@ export class SubmissionFormComponent implements OnInit, AfterViewInit, OnDestroy
 			if (this.chips.indexOf(selectedTag) == -1) {
 				this.chips.push(selectedTag);
 			}
-
-
-			// } else {
-			// 	this.chips = this.chips.filter(c => c !== selectedTag);
-			// }
 		}
 	}
 }

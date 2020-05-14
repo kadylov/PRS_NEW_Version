@@ -19,6 +19,7 @@ export class WorkService {
 	constructor(private http: HttpClient) {
 	}
 
+	// submit author work to the server
 	submit(work: Work): Observable<any> {
 		const body = new HttpParams()
 			.set(`postNewWork`, 'postNewWork',)
@@ -37,13 +38,12 @@ export class WorkService {
 			);
 	}
 
+	// fetch tags from server for displaying them on the work submission form
 	getAllTags(): Observable<TagModel[]> {
 		return this.http.get<TagModel[]>(url, {params: {getAllTags: 'getAllTags'}})
 			.pipe(
 				map(tags => {
 					tags.forEach(tag => {
-						// let ls: string = Object.assign(tag.TagList);
-						// tag.TagList = ls.split(',');
 						tag.TagList = this.convertToArray(tag.TagList);
 
 					});
@@ -55,7 +55,6 @@ export class WorkService {
 	}
 
 	// getAllWorks
-
 	public getAllWorks(): Observable<Work[]> {
 		return this.http.get<DataTableWorkModel[]>(url, {params: {getAllWorks: 'getAllWorks'}}).pipe(
 			map(works => {
@@ -68,6 +67,8 @@ export class WorkService {
 		);
 	}
 
+	// fetch all scored works for public view
+	// it is called in public page
 	public getWorksForPublic(): Observable<Work[]> {
 		return this.http.get<DataTableWorkModel[]>(url, {params: {getWorksForPublic: 'getWorksForPublic'}}).pipe(
 			retry(3),
@@ -82,6 +83,7 @@ export class WorkService {
 		);
 	}
 
+	// fetch incoming works for admin pre-review
 	getIncomingWorks(): Observable<Work[]> {
 		return this.http.get<any>(url, {params: {incommingWorks: 'any'}}).pipe(
 			map(works => {
@@ -97,13 +99,16 @@ export class WorkService {
 		);
 	}
 
-
+	// converts strings that are comma separated into array
 	private convertToArray(str: string[]) {
 		let ls: string = Object.assign(str);
 		str = ls.split(',');
 		return str;
 	}
 
+	// make work available for public view
+	// it is used in admin's 'all works' component
+	// where sliders are used for publishing work
 	publishWork(WID: number, checked: number): Observable<any> {
 		const body = new HttpParams()
 			.set(`publishWork`, 'publishWork',)
@@ -119,6 +124,8 @@ export class WorkService {
 	}
 
 
+	// sends new work status to the server (e.g. completed, rejected)
+	// it is called in "Completed Reviews" tab, where admin makes a final decision
 	updateWorkStatusByID(wid: number, status: string): Observable<any> {
 		const body = new HttpParams()
 			.set(`updateWorkStatus`, 'updateWorkStatus',)

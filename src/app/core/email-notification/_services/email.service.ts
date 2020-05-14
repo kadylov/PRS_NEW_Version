@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Email} from '../_models/email.model';
 import {Observable, throwError} from 'rxjs';
-import {Work} from '../../../views/author/model/work';
 import {catchError} from 'rxjs/operators';
 import {environment} from '../../../../environments/environment';
 
@@ -19,34 +18,6 @@ export class EmailService {
 
 	constructor(private http: HttpClient) {
 	}
-
-	/*
-	*
-	* senderName: 'no-reply',
-			senderEmail: this.admin.email,
-			recepientName: this.work.AuthorName,
-			recepientEmail: this.work.AuthorEmail,
-			subject: 'Work Status Notification',
-			message: msg,
-	*
-	* */
-
-	// sendEmail(email: Email): Observable<any> {
-	// 	const body = new HttpParams()
-	// 		.set(`contactMessage`, 'contactMessage',)
-	// 		.set(`senderName`, email.senderName)
-	// 		.set(`senderEmail`, email.senderEmail)
-	// 		.set(`subject`, email.subject)
-	// 		.set(`message`, email.message)
-	// 		.set(`canReply`, email.canReply.toString());
-	// 	return this.http.post<any>(url, body, {headers: headers})
-	// 		.pipe(
-	// 			catchError(err => {
-	// 				return throwError(err);
-	// 			})
-	// 		);
-	// }
-
 
 	sendEmail(email: Email) {
 		const body = new HttpParams()

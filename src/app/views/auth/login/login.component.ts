@@ -1,19 +1,13 @@
 // Angular
 import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 // RxJS
-import {Observable, Subject, Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {finalize, takeUntil, tap} from 'rxjs/operators';
-// Translate
-import {TranslateService} from '@ngx-translate/core';
-// Store
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../core/reducers';
 // Auth
 import {AuthNoticeService, AuthService} from '../../../core/auth';
 import {User1} from '../../../core/auth/_models/user1.model';
-import {MenuConfigService, PageConfigService} from '../../../core/_base/layout';
 
 /**
  * ! Just example => Should be removed in development
@@ -32,12 +26,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 	// Public params
 	loginForm: FormGroup;
 	loading = false;
-	isLoggedIn$: Observable<boolean>;
 	errors: any = [];
 
 	private unsubscribe: Subject<any>;
 
-	private wSub: Subscription = new Subscription();
+	private wSub: Subscription;
 
 
 	private returnUrl: any;
@@ -51,26 +44,15 @@ export class LoginComponent implements OnInit, OnDestroy {
 	 * @param router: Router
 	 * @param auth: AuthService
 	 * @param authNoticeService: AuthNoticeService
-	 * @param translate: TranslateService
-	 * @param store: Store<AppState>
 	 * @param fb: FormBuilder
 	 * @param cdr
-	 * @param route
 	 */
 	constructor(
 		private router: Router,
 		private auth: AuthService,
 		private authNoticeService: AuthNoticeService,
-		private translate: TranslateService,
-		// private store: Store<AppState>,
 		private fb: FormBuilder,
 		private cdr: ChangeDetectorRef,
-		private menuConfigService: MenuConfigService,
-		private pageConfigService: PageConfigService,
-		private store: Store<AppState>
-
-
-		// private route: ActivatedRoute
 	) {
 		this.unsubscribe = new Subject();
 	}
@@ -84,11 +66,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 	 */
 	ngOnInit(): void {
 		this.initLoginForm();
-
-		// redirect back to the returnUrl before login
-		// this.route.queryParams.subscribe(params => {
-		// 	this.returnUrl = params['returnUrl'] || '/';
-		// });
 	}
 
 	/**
@@ -96,11 +73,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 	 */
 	ngOnDestroy(): void {
 		this.authNoticeService.setNotice(null);
-		// this.unsubscribe.next();
-		// this.unsubscribe.complete();
 		this.loading = false;
 
-		// this.wSub.unsubscribe();
+		if (this.wSub) {
+			this.wSub.unsubscribe();
+		}
 	}
 
 	/**
@@ -151,24 +128,24 @@ export class LoginComponent implements OnInit, OnDestroy {
 			password: controls['password'].value
 		};
 
-		this.wSub = this.auth
-			.login(authData.username, authData.password)
-			.subscribe(
-				res => {
+		this.wSub = this.auth.login(authData.username, authData.password)
+			.subscribe(res => {
 
 					this.user = res;
+
+					// check whether user account is deactivated
+					// display error message if user account is deactivated
 					if (this.user.isActive == 0) {
-						this.authNoticeService.setNotice('Error, you account has been deactivated', 'danger');
+						this.authNoticeService.setNotice('Error, your account has been deactivated', 'danger');
 						return;
 					}
 
+					// if reviewer logged in, redirect to reviewer dashboard
+					// else redirect to admin dashboard
 					if (this.user.roleId != 3) {
-						// this.router.navigateByUrl('reviewer/dashboard'); // Reviewer page
-
 						this.router.navigate(['reviewer/dashboard']); // Reviewer page
 					} else {
-
-						this.router.navigate(['admin/dashboard']); // Reviewer page
+						this.router.navigate(['admin/dashboard']); // Admin page
 
 					}
 
@@ -176,13 +153,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 				},
 				error => {
-					this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.INVALID_LOGIN'), 'danger');
+					this.authNoticeService.setNotice('The login detail is incorrect', 'danger');
 					console.log('There was an error while retrieving User !!!' + error);
 				}),
 			takeUntil(this.unsubscribe),
 			finalize(() => {
 				this.loading = false;
-				// this.cdr.markForCheck();
+				this.cdr.markForCheck();
 			});
 
 	}

@@ -14,7 +14,6 @@ import {
 } from '@angular/material';
 import { AuthorComponent } from './author.component';
 import {SubmissionFormComponent} from './submission-form/submission-form.component';
-import { AuthNoticeComponent } from './auth-notice/auth-notice.component';
 import {NgbTabsetModule} from '@ng-bootstrap/ng-bootstrap';
 import {TagsComponent} from './tag-selections/tags.component';
 import { FocusDirective } from './directive/focus.directive';
@@ -70,11 +69,10 @@ const routes: Routes = [
 	providers: [
 		DatePipe
 	],
-	exports: [AuthorComponent, AuthNoticeComponent],
+	exports: [AuthorComponent],
 	declarations: [
 		AuthorComponent,
 		SubmissionFormComponent,
-		AuthNoticeComponent,
 		TagsComponent,
 		FocusDirective,
 	],
