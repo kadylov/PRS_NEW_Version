@@ -1,3 +1,5 @@
+
+<!-- load information from reviewers scorecards if not empty else load admin review container-->
 <div
 	*ngIf="scorecards; else admin_review"
 	class="border" style="padding: 0 10px; font-weight: 500">
@@ -58,9 +60,11 @@
 			</div>
 		</div>
 	</div>
-
 </div>
+<!--end of reviewers scorecard div-->
 
+
+<!--load up admin review information if scorecard was not passed from summary-view component-->
 <ng-template #admin_review>
 	<div
 		class="border" style="padding: 0 10px; font-weight: 500">
@@ -90,9 +94,7 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
-
 </ng-template>
-
+<!--end of admin review-->
 

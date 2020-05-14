@@ -40,11 +40,11 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {PreReviewComponent} from './pre-review/pre-review.component';
 import {AllWorksComponent} from './all-works/all-works.component';
 import {RubricComponent} from './rubric/rubric.component';
-import {WorkSummaryComponent} from './work-summary/work-summary.component';
 import {CompletedReviewComponent} from './completed-review/completed-review.component';
 import {SummaryViewComponent} from './completed-review/summary-view/summary-view.component';
 import {AuthGuard, Role} from '../../core/auth';
 import {SetThresholdComponent} from './admin/set-threshold/set-threshold.component';
+import {WorkSummaryComponent} from './completed-review/work-summary-table/work-summary.component';
 
 const routes:Routes=[
 	{

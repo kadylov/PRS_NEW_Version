@@ -23,18 +23,22 @@ export class CompletedReviewComponent implements OnInit {
 	ngOnInit() {
 
 		/*
-		* fetch reviewers' scorecards for the assigned works
-		* */
+		* fetch reviewers' scorecards for the assigned works from the server
+		*/
 		this.scoredWorks$ = this.adminService.getReviewersScorecard();
 		this.ref.markForCheck();
 	}
 
 
+	// this function is called when admin clicks on 'view' button from the table
+	// it stores work information(e.g. workID, title, etc) reviewers scorecards
 	onClick(summary: any) {
 		sessionStorage.setItem('summary', JSON.stringify(summary));
 		this.router.navigateByUrl('/admin/summary');
 	}
 
+	// calculates and returns cumulative score from the reviewer scorecard
+	// it is used for displaying the score under the Cumulative score column
 	getCumulativeScore(scoredWork: any) {
 		const scorecards = scoredWork['Scorecards'];
 

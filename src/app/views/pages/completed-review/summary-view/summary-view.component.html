@@ -15,14 +15,21 @@
 			</div>
 			<div class="kt-portlet__body">
 
+
+					<!--load summary table that displays reviewers'
+					 Names,Role, Credential, Individual Score for the work
+					 calculated Overall Score and Current Threshold underneath
+					 accepts all 5 reviewers scorecards that contains scores for each rubric 				-->
 					<work-summary [scorecards]="summary['Scorecards']"></work-summary>
 
 
+				<!-- displays accept and reject buttons if the work status is scored
+				  else displays just main menu button to return to the previous page -->
 				<div class="align-self-center d-flex mt-5" *ngIf="summary['Status']==='scored'; else showMainMenuBtn">
 					<a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary"
 					   mat-raised-button matTooltip="Accept Work"
 
-					   (click)="onClick('accepted')"
+					   (click)="onClick('completed')"
 					>
 						<span class="kt-hidden-mobile">Accept</span>
 					</a>
@@ -37,6 +44,7 @@
 					</a>
 				</div>
 
+				<!-- displays Main menu button if the work status!=='scored' -->
 				<ng-template #showMainMenuBtn>
 					<div class="align-self-center d-flex mt-5">
 						<button

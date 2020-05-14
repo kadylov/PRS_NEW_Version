@@ -1,10 +1,9 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Work} from '../../author/model/work';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {FormControl, Validators} from '@angular/forms';
 import {AdminService} from '../../../core/admin/_services/admin.service';
 import {DatePipe} from '@angular/common';
-import {error} from '@angular/compiler/src/util';
 import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {Router} from '@angular/router';
 import {EmailService} from '../../../core/email-notification/_services/email.service';
@@ -16,7 +15,8 @@ import {User1} from '../../../core/auth/_models/user1.model';
 	selector: 'pre-review',
 	templateUrl: './pre-review.component.html',
 	styleUrls: ['./pre-review.component.scss'],
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class PreReviewComponent implements OnInit, OnDestroy {
 	work: Work;
@@ -26,7 +26,7 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 	loading: boolean = true;
 	isFullscreen: boolean = false;
 
-	subscribtion: Subscription;
+	subscribtion: Subscription[]=[];
 
 	decision: FormControl = new FormControl('', Validators.required);
 	rejectNote: FormControl = new FormControl('', Validators.required);
@@ -47,16 +47,18 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 
 		this.work.URL = this.work.URL.toLowerCase();
 
+		// check and fix url of the work for missing component(e.g. http)
 		if (!this.work.URL.startsWith('https://') && !this.work.URL.startsWith('http://')) {
 			this.work.URL = 'http://' + this.work.URL;
 		}
 
+		// sanitize work url before it is loaded to iframe
 		this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.work.URL);
 	}
 
 	ngOnDestroy(): void {
-		if (this.subscribtion) {
-			this.subscribtion.unsubscribe();
+		if (this.subscribtion.length>0) {
+			this.subscribtion.forEach(sub=>{sub.unsubscribe()});
 		}
 
 		sessionStorage.removeItem('workForAdmReview');
@@ -83,12 +85,17 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 
 		let preReview = this.generatePreReview(rejectNote);
 		if (preReview) {
-			this.subscribtion = this.adminService.submitPreReview(preReview).subscribe(
+
+			const subsc1 = this.adminService.submitPreReview(preReview).subscribe(
 				() => {
+
+					// display confirmation message to the screen and send work status to author via email
 					this.displaySnackBar('Your review has been submitted successfully.');
-					this.emailService.sendWorkStatusEmail(this.createWorkStatusEmail()).subscribe();
+					const subsc2 =this.emailService.sendWorkStatusEmail(this.createWorkStatusEmail()).subscribe();
 					this.clearForm();
 
+					this.subscribtion.push(subsc1);
+					this.subscribtion.push(subsc2);
 					this.router.navigateByUrl('admin/assignment');
 				},
 				error => {
@@ -103,6 +110,7 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 			return;
 		}
 
+		// get current date
 		let date = this.datepipe.transform(new Date(Date.now()), 'yyyy-MM-dd');
 		return {
 			AdminID: this.admin.id,
@@ -113,6 +121,7 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 		};
 	}
 
+	// displays confirmation message to the screen
 	private displaySnackBar(message: string) {
 		let config = new MatSnackBarConfig();
 		config.duration = 5000;
@@ -152,6 +161,7 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 		};
 	}
 
+	// it is used for exiting from full screen when work content is displaying in full screen
 	exitFromFullScreen() {
 		this.isFullscreen = false;
 
@@ -160,6 +170,7 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	// it is used for making review material to full screen
 	openInFullScreen() {
 		this.isFullscreen = true;
 		var elem = document.getElementById('myDiv');
@@ -169,6 +180,8 @@ export class PreReviewComponent implements OnInit, OnDestroy {
 	}
 
 
+	// it is used for displaying error message on the screen if admin did not select one of
+	// the radio buttons or reject note is left empty upon submitting pre-review
 	isControlHasError(controlName: string, validationType: string): boolean {
 		let control: FormControl = null;
 
