@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 import {DataTableWorkModel} from '../models/datatable-work.model';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {map, retry, tap} from 'rxjs/operators';
-import {Work} from '../../../../views/author/model/work';
+import {Work} from '../../../work/model/work';
 
 // const API_DATATABLE_URL = 'api/works'
 const API_DATATABLE_URL = 'http://3.95.8.94/example/index.php';

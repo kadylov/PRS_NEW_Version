@@ -1,10 +1,9 @@
 // Angular
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
-import {Work} from '../../author/model/work';
-import {DataTableWorkService} from '../../../core/_base/layout';
 import {Router} from '@angular/router';
-import {WorkService} from '../../author/service/work.service';
+import {WorkService} from '../../../core/work/service/work.service';
+import {Work} from '../../../core/work/model/work';
 
 @Component({
 	selector: 'kt-dashboard',

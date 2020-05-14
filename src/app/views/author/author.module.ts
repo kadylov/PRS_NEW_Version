@@ -15,7 +15,6 @@ import {
 import { AuthorComponent } from './author.component';
 import {SubmissionFormComponent} from './submission-form/submission-form.component';
 import {NgbTabsetModule} from '@ng-bootstrap/ng-bootstrap';
-import {TagsComponent} from './tag-selections/tags.component';
 import { FocusDirective } from './directive/focus.directive';
 
 const routes: Routes = [
@@ -31,16 +30,8 @@ const routes: Routes = [
 			{
 				path: 'submission',
 				component: SubmissionFormComponent,
-				// component: TagsComponent,
-
-				// data: {returnUrl: window.location.pathname}
 			},
 
-			{
-				path: 'tags',
-				component: TagsComponent,
-				data: {returnUrl: window.location.pathname}
-			},
 		]
 	}
 ];
@@ -73,7 +64,6 @@ const routes: Routes = [
 	declarations: [
 		AuthorComponent,
 		SubmissionFormComponent,
-		TagsComponent,
 		FocusDirective,
 	],
 

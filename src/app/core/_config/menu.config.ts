@@ -8,7 +8,6 @@ export class MenuConfig {
 					root: true,
 					alignment: 'left',
 					page: '/admin/dashboard',
-					translate: 'MENU.DASHBOARD',
 				},
 				{
 					title: 'Assignments',
@@ -17,7 +16,7 @@ export class MenuConfig {
 					page: '/admin/assignment',
 				},
 				{
-					title: 'Works',
+					title: ' All Works',
 					root: true,
 					alignment: 'left',
 					page: '/admin/allworks',
@@ -68,7 +67,7 @@ export class MenuConfig {
 					icon: 'flaticon-line-graph' // <= Choose the icon class
 				},
 				{
-					title: 'Works', // <= Title of the page
+					title: 'All Works', // <= Title of the page
 					root: true,
 					page: '/admin/allworks', // <= URL
 					icon: 'flaticon-line-graph' // <= Choose the icon class

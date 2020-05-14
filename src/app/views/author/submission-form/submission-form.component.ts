@@ -15,9 +15,9 @@ import {AuthNoticeService} from '../../../core/auth';
 import {Observable, Subject, Subscription} from 'rxjs';
 import {TagModel} from '../../../core/author/_models/tag.model';
 import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
-import {Work} from '../model/work';
 import {DatePipe} from '@angular/common';
-import {WorkService} from '../service/work.service';
+import {WorkService} from '../../../core/work/service/work.service';
+import {Work} from '../../../core/work/model/work';
 
 
 @Component({

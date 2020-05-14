@@ -1,17 +1,17 @@
-import {Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSlideToggleChange, MatSort, MatTableDataSource} from '@angular/material';
-import {Work} from '../../author/model/work';
 import {Subscription} from 'rxjs';
-import {WorkService} from '../../author/service/work.service';
-import {User1} from '../../../core/auth/_models/user1.model';
 import {Router} from '@angular/router';
 import {AdminService} from '../../../core/admin/_services/admin.service';
+import {WorkService} from '../../../core/work/service/work.service';
+import {Work} from '../../../core/work/model/work';
 
 
 @Component({
 	selector: 'kt-all-works',
 	templateUrl: './all-works.component.html',
 	styleUrls: ['./all-works.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AllWorksComponent implements OnInit, OnDestroy {
 
@@ -19,7 +19,7 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 	dataSource: MatTableDataSource<Work>;
 	works: any = [];
 
-	subscription: Subscription[]=[];
+	subscription: Subscription[] = [];
 
 	@ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 	@ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -31,7 +31,7 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private router: Router,
-		private adminService:AdminService,
+		private adminService: AdminService,
 		private workService: WorkService) {
 		this.dataSource = new MatTableDataSource();
 
@@ -104,7 +104,7 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 
 		if (summary.Status === 'denied') {
 			const subsc = this.adminService.getAdminReview(summary.WID).subscribe(
-				res=>{
+				res => {
 
 					let pre_review = {
 						...summary,
@@ -113,26 +113,26 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 						DateReviewed: res[0].DateReviewed,
 						Decision: res[0].Decision,
 						RejectNote: res[0].RejectNote
-					}
+					};
 
 					// store admin's pre_review(e.g. AdminID, WorkID, Title, DateReviewed, Decision, RejectNote)
 					sessionStorage.setItem('summary', JSON.stringify(pre_review));
 					this.router.navigateByUrl('/admin/summary');
 
 				}
-			)
+			);
 			this.subscription.push(subsc);
 
 		} else {
 			const subsc = this.adminService.getReviewersScorecard(summary.WID.toString()).subscribe(
-				res=>{
+				res => {
 					console.log(res);
 
 					sessionStorage.setItem('summary', JSON.stringify(res[0]));
 					this.router.navigateByUrl('/admin/summary');
 
 				}
-			)
+			);
 
 		}
 	}
@@ -159,7 +159,9 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 				return 'text-primary';
 
 			case 'accepted':
+			case 'completed':
 				return 'text-success';
+
 
 			default:
 				return '';
@@ -206,11 +208,11 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 
 		if (work.Publish == 1) {
 			return 'Work is published';
-		} else if (work.Status == 'denied' || work.Status == 'rejected' ) {
+		} else if (work.Status == 'denied' || work.Status == 'rejected') {
 			return 'Rejected work cannot be published';
-		} else if (work.Status == 'assigned' ) {
+		} else if (work.Status == 'assigned') {
 			return 'Work has not been scored yet';
-		} else if (work.Status == 'reviewed' ) {
+		} else if (work.Status == 'reviewed') {
 			return 'Work cannot be published until without a review summary';
 		} else {
 			return 'Unpublished work';
@@ -219,7 +221,7 @@ export class AllWorksComponent implements OnInit, OnDestroy {
 	}
 
 
-	private prepare_pre_review(work:Work) {
+	private prepare_pre_review(work: Work) {
 
 	}
 }

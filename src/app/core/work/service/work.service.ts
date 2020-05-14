@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Work} from '../model/work';
 import {Observable, throwError} from 'rxjs';
 import {TagModel} from '../../../core/author/_models/tag.model';
 import {catchError, map, retry, tap} from 'rxjs/operators';
 import {DataTableWorkModel} from '../../../core/_base/layout';
 import {environment} from '../../../../environments/environment';
+import {Work} from '../model/work';
 
 
 // const url = 'http://3.95.8.94/example/work_request.php';

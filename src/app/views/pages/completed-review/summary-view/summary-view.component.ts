@@ -1,9 +1,9 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {WorkService} from '../../../author/service/work.service';
 import {Subscription} from 'rxjs';
 import {Location} from '@angular/common';
 import {LayoutUtilsService, MessageType} from '../../../../core/_base/crud';
+import {WorkService} from '../../../../core/work/service/work.service';
 
 @Component({
 	selector: 'kt-summary',

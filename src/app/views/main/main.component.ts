@@ -1,6 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {AboutComponent} from './about-page/about.component';
-import {ContactComponent} from './contact-page/contact.component';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 
@@ -9,9 +7,12 @@ import {Subscription} from 'rxjs';
 	selector: 'kt-main',
 	templateUrl: './main.component.html',
 	styleUrls: ['./main.component.scss'],
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	changeDetection:ChangeDetectionStrategy.OnPush
 })
+// This component is for displaying top panel (e.g. header) of public page
 export class MainComponent implements OnInit, OnDestroy {
+
 	title: string = 'The Highest Scored Works';
 
 	subscription:Subscription;

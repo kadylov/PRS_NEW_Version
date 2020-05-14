@@ -3,7 +3,6 @@ import {SafeUrl} from '@angular/platform-browser';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
-import {WorkService} from '../../author/service/work.service';
 import {AdminService} from '../../../core/admin/_services/admin.service';
 import {ReviewerService} from '../../../core/reviewer/_services/reviewer.service';
 import {User1} from '../../../core/auth/_models/user1.model';

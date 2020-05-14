@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {Router} from '@angular/router';
@@ -11,7 +11,8 @@ import {Subscription} from 'rxjs';
 	selector: 'kt-contact1',
 	templateUrl: './contact.component.html',
 	styleUrls: ['./contact.component.scss'],
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContactComponent implements OnInit, OnDestroy {
 
@@ -44,6 +45,12 @@ export class ContactComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	/**
+	 * Checking control validation
+	 *
+	 * @param controlName: string => Equals to formControlName
+	 * @param validationType: string => Equals to valitors name
+	 */
 	isControlHasError(controlName: string, validationType: string) {
 		const control = this.contactForm.controls[controlName];
 		if (!control) {
@@ -54,6 +61,8 @@ export class ContactComponent implements OnInit, OnDestroy {
 	}
 
 	submit() {
+
+		// validate user input
 		const controls = this.contactForm.controls;
 		if (this.contactForm.invalid) {
 			Object.keys(controls).forEach(controlName =>
@@ -93,6 +102,7 @@ export class ContactComponent implements OnInit, OnDestroy {
 
 	}
 
+	// initialize form controls
 	initContactForm() {
 		this.contactForm = this.fb.group({
 			fullname: ['', Validators.compose([

@@ -1,14 +1,14 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {Work} from '../author/model/work';
 import {Subscription} from 'rxjs';
-import {DataTableWorkService} from '../../core/_base/layout';
-import {WorkService} from '../author/service/work.service';
+import {WorkService} from '../../core/work/service/work.service';
+import {Work} from '../../core/work/model/work';
 
 @Component({
-  selector: 'kt-public-page',
-  templateUrl: './public-page.component.html',
-  styleUrls: ['./public-page.component.scss']
+	selector: 'kt-public-page',
+	templateUrl: './public-page.component.html',
+	styleUrls: ['./public-page.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PublicPageComponent implements OnInit, OnDestroy {
 	title: string = 'The Highest Scored Works';
@@ -23,14 +23,11 @@ export class PublicPageComponent implements OnInit, OnDestroy {
 	@ViewChild(MatSort, {static: true}) sort: MatSort;
 
 
-	tagList = [];
-	selectable: boolean = false;
-	removable: boolean = false;
-
 	constructor(private workService: WorkService) {
 		this.dataSource = new MatTableDataSource();
 
 	}
+
 	ngOnInit() {
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.sort = this.sort;
@@ -42,6 +39,7 @@ export class PublicPageComponent implements OnInit, OnDestroy {
 		this.wSub.unsubscribe();
 	}
 
+	// it is used for search box
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 
@@ -51,6 +49,7 @@ export class PublicPageComponent implements OnInit, OnDestroy {
 	}
 
 
+	// loads all highest scored works from the server for public view
 	loadWorks() {
 		this.wSub = this.workService.getWorksForPublic()
 			.subscribe(
@@ -58,8 +57,6 @@ export class PublicPageComponent implements OnInit, OnDestroy {
 					this.dataSource.data = res;
 					this.dataSource.sort = this.sort;
 					this.dataSource.paginator = this.paginator;
-					// console.log("AAAA");
-					// console.log(this.dataSource.data);
 				},
 				error => {
 					console.log('There was an error while retrieving Posts !!!' + error);

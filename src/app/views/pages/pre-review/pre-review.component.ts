@@ -1,5 +1,4 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {Work} from '../../author/model/work';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {FormControl, Validators} from '@angular/forms';
 import {AdminService} from '../../../core/admin/_services/admin.service';
@@ -10,6 +9,7 @@ import {EmailService} from '../../../core/email-notification/_services/email.ser
 import {Subscription} from 'rxjs';
 import {Email} from '../../../core/email-notification/_models/email.model';
 import {User1} from '../../../core/auth/_models/user1.model';
+import {Work} from '../../../core/work/model/work';
 
 @Component({
 	selector: 'pre-review',

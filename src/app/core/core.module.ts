@@ -23,6 +23,7 @@ import {AdminService} from './admin/_services/admin.service';
 import {EmailService} from './email-notification/_services/email.service';
 import {FileBackupService} from './file-service/file-backup.service';
 import {RubricService} from './rubric/_service/rubric.service';
+import {WorkService} from './work/service/work.service';
 
 @NgModule({
 	imports: [CommonModule],
@@ -65,7 +66,7 @@ import {RubricService} from './rubric/_service/rubric.service';
 		CustomSortPipe,
 
 	],
-	providers: [AdminService, EmailService, FileBackupService, RubricService]
+	providers: [AdminService, EmailService, FileBackupService, RubricService, WorkService]
 })
 export class CoreModule {
 }

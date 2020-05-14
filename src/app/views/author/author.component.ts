@@ -1,16 +1,18 @@
 // Angular
-import { Component, ElementRef, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, OnInit, Renderer2, ViewEncapsulation} from '@angular/core';
 // Layout
-import { LayoutConfigService } from '../../core/_base/layout';
+import {LayoutConfigService} from '../../core/_base/layout';
 // Auth
-import { AuthNoticeService } from '../../core/auth';
+import {AuthNoticeService} from '../../core/auth';
 
 @Component({
 	selector: 'kt-auth',
 	templateUrl: './author.component.html',
 	styleUrls: ['./author.component.scss'],
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	changeDetection:ChangeDetectionStrategy.OnPush
 })
+// This component is for displaying left panel of author submission page
 export class AuthorComponent implements OnInit {
 	// Public properties
 	today: number = Date.now();
@@ -40,7 +42,6 @@ export class AuthorComponent implements OnInit {
 	 * On init
 	 */
 	ngOnInit(): void {
-		// this.translationService.setLanguage(this.translationService.getSelectedLanguage());
 		this.headerLogo = this.layoutConfigService.getLogo();
 
 	}
