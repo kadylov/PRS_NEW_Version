@@ -163,4 +163,21 @@ export class ReviewerService {
 				})
 			);
 	}
+
+	// get all reviewers comments from their scorecard
+	getAllReviewersComments(workID):Observable<any>{
+		return this.http.get<any>(API_REVIEWER_URL,{params: {getAllReviewersComments: 'any', WorkID: workID}})
+			.pipe(
+				map(res=>{
+
+					if (res) {
+						let comments='';
+						res.forEach(c=>{
+							comments+= '<p>'+c['ReviewerComment']+'</p>'
+						})
+						return comments;
+					}
+				})
+			)
+	}
 }

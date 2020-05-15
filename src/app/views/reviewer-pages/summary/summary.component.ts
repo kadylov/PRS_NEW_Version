@@ -6,13 +6,12 @@ import {AdminService} from '../../../core/admin/_services/admin.service';
 import {ReviewerService} from '../../../core/reviewer/_services/reviewer.service';
 import {User1} from '../../../core/auth/_models/user1.model';
 import {LayoutUtilsService, MessageType} from '../../../core/_base/crud';
+import {global} from '@angular/compiler/src/util';
 
 @Component({
 		selector: 'kt-summary',
 		templateUrl: './summary.component.html',
 		styleUrls: ['./summary.component.scss'],
-		changeDetection: ChangeDetectionStrategy.OnPush
-
 	}
 )
 // Lead Reviewer's Summary
@@ -24,6 +23,8 @@ export class SummaryComponent implements OnInit {
 
 	overallScore: number = 0;
 	scorecards: any;
+
+	collectedComments: string;
 
 	// for storing number of reviewers for calculating overall score
 	// of the work
@@ -46,6 +47,8 @@ export class SummaryComponent implements OnInit {
 			res => {
 				this.summary = res[0];
 				this.scorecards = res[0]['Scorecards'];
+				this.getAllComments(this.summary['WID']);
+
 				this.ref.markForCheck();
 
 			}
@@ -77,17 +80,18 @@ export class SummaryComponent implements OnInit {
 			this.location.back();
 
 		} else {
+
 			const wid = this.summary['WID'];
 			const leadReviewerID = this.getUserId();
-
-			// create a summary object
 			let summary = {
 				WorkID: wid,
 				LeadID: leadReviewerID,
 				WorkFinalScore: this.overallScore / this.numbReviewers,
-				SummaryText: ''
+				SummaryText: this.collectedComments
 			};
 
+
+			// submit review summary to the server
 			this.subscription.push(this.reviewerService.sendSummary(summary).subscribe(
 				() => {
 					this.summary = undefined;
@@ -99,6 +103,15 @@ export class SummaryComponent implements OnInit {
 			));
 
 		}
+	}
+
+	// get all comments made by reviewers from their scorecards
+	getAllComments(workID) {
+		this.subscription.push(this.reviewerService.getAllReviewersComments(workID).
+		subscribe(
+			res => this.collectedComments = res
+		));
+
 	}
 
 	getTotalScore(scorecard: any) {
