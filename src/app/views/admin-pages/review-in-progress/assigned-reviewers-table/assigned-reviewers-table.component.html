@@ -49,7 +49,7 @@
 							color="primary"
 							[hidden]="row.DueDate<currentDate==false"
 							(click)="switchUser(row)"
-					>Switch Reviewer1
+					>Switch Reviewer
 					</button>
 
 					<!-- button will be only displayed on 'assignment1' component -->
@@ -57,7 +57,7 @@
 							color="primary"
 							[hidden]="isForIncomingWork==false"
 							(click)="reassignReviewer(row)"
-					>Switch Reviewer2
+					>Switch Reviewer
 					</button>
 				</td>
 			</ng-container>
