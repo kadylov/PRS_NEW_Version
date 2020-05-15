@@ -17,6 +17,7 @@ export class ReviewerService {
 	constructor(private http: HttpClient) {
 	}
 
+	// fetch all review history made by the current user
 	getAllReviews(): Observable<any> {
 		let user = JSON.parse(sessionStorage.getItem('user'));
 
@@ -33,6 +34,7 @@ export class ReviewerService {
 
 	}
 
+	// fetches new assignment for the reviewer to review
 	getCurrentAssignment(reviewerID: number): Observable<any> {
 		return this.http.get<Assignment[]>(API_REVIEWER_URL, {
 			params: {
@@ -42,6 +44,7 @@ export class ReviewerService {
 		});
 	}
 
+	// fetches review history of the reviewer
 	getAssignmentHistory(reviewerID: number): Observable<any> {
 		return this.http.get<Assignment[]>(API_REVIEWER_URL, {
 			params: {
@@ -51,6 +54,7 @@ export class ReviewerService {
 		});
 	}
 
+	// fetches messages made by other reviewers in the discussion for the work
 	getMessageHistory(workID: number): Observable<Message[]> {
 		return this.http.get<Message[]>(API_REVIEWER_URL, {
 			params: {
@@ -58,23 +62,24 @@ export class ReviewerService {
 				WorkID: workID.toString()
 			}
 		}).pipe(
-
-			map(res=>{
-				if (res==null) {
+			map(res => {
+				if (res == null) {
 					return [];
-				}else return res;
+				} else {
+					return res;
+				}
 			}),
 
 			catchError(err => {
 				return throwError(err);
 			})
-
 		);
 	}
 
+	// submits new message that reviewer typed in the discussion
 	postNewMessage(message: Message): Observable<any> {
 		//WorkID, ReviewerID, Message, DTime
-		console.log("New msg:",message)
+		console.log('New msg:', message);
 		const body = new HttpParams()
 			.set(`postNewMessage`, 'postNewMessage')
 			.set(`WorkID`, message.WorkID.toString())
@@ -85,7 +90,10 @@ export class ReviewerService {
 	}
 
 	// sends scores from the
-	sendScores(WID, reviewerID, q1Value, q2Value, q3Value, q4Value, q5Value, q6Value, q7Value, q8Value, q9Value, q10Value, q11Value, q12Value, cValue) {
+	sendScores(WID, reviewerID, q1Value, q2Value, q3Value,
+			   q4Value, q5Value, q6Value, q7Value, q8Value,
+			   q9Value, q10Value, q11Value, q12Value, cValue,
+			   rcomment) {
 		const body = new HttpParams()
 			.set(`saveScorecard`, 'saveScorecard')
 			.set(`WID`, WID)
@@ -102,12 +110,13 @@ export class ReviewerService {
 			.set(`q10Value`, q10Value)
 			.set(`q11Value`, q11Value)
 			.set(`q12Value`, q12Value)
-			.set(`totalScore`, cValue);
+			.set(`totalScore`, cValue)
+			.set(`ReviewerComment`, rcomment);
 
 		return this.http.post<any>(API_REVIEWER_URL, body, {headers: headers});
 	}
 
-
+	// fetches scorecard of the current reviewer
 	getScorecard(wid: number, reviewerID: number): Observable<any> {
 		return this.http.get<any>(API_REVIEWER_URL, {
 			params: {
@@ -131,7 +140,27 @@ export class ReviewerService {
 			);
 	}
 
-	sendSummary(summary: { LeadID: number; WorkID: any; WorkFinalScore: number; SummaryText: string }):Observable<any> {
-		return this.http.post(summaryURL,summary);
+
+	// submit generated lead's reviewer summary
+	sendSummary(summary: { LeadID: number; WorkID: any; WorkFinalScore: number; SummaryText: string }): Observable<any> {
+		return this.http.post(summaryURL, summary);
+	}
+
+
+	// fetch reviewer comment from the scorecard
+	getReviewerComment(workID, reviewerID): Observable<any> {
+		return this.http.get(API_REVIEWER_URL, {params: {getScorecardComment: 'any',WorkID: workID, ReviewerID: reviewerID}})
+			.pipe(
+				map(res => {
+					if (res) {
+						return res[0]['ReviewerComment'];
+					} else {
+						return '';
+					}
+				}),
+				catchError(err => {
+					return throwError(err);
+				})
+			);
 	}
 }

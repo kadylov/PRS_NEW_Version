@@ -8,6 +8,7 @@ import {Location} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {MatDialog, MatIconRegistry} from '@angular/material';
 import {DiscussionComponent} from '../../discussion/discussion.component';
+import {LayoutUtilsService, MessageType} from '../../../../core/_base/crud';
 
 
 @Component({
@@ -34,13 +35,17 @@ export class InProgressComponent implements OnInit, OnDestroy {
 	q12Value = 0;
 	cValue = 0;
 
+
+	comment: string = '';
+
+
 	// for dispalying loading animation while work url is loading in iframe
 	loading: boolean = true;
 
 	// flag for setting material review container to full screen
 	isFullscreen: boolean = false;
 	subscription: Subscription[] = [];
-	assignment:any = null;
+	assignment: any = null;
 	safeUrl: SafeUrl;						// for url sanitazing prior loading to iframe
 	canScore: boolean = true;				// flag for setting scorecard to reading or writting mode
 
@@ -55,6 +60,7 @@ export class InProgressComponent implements OnInit, OnDestroy {
 		private modalService: NgbModal,
 		iconRegistry: MatIconRegistry,
 		public dialog: MatDialog,
+		private layoutUtilsService: LayoutUtilsService,
 		private reviewerService: ReviewerService
 	) {
 
@@ -64,8 +70,8 @@ export class InProgressComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		this.assignment = JSON.parse(sessionStorage.getItem('assignment'));
 
+		this.assignment = JSON.parse(sessionStorage.getItem('assignment'));
 
 		// checks whether assignment is for scoring or for reading
 		if (this.assignment) {
@@ -95,8 +101,9 @@ export class InProgressComponent implements OnInit, OnDestroy {
 			this.q1Value, this.q2Value, this.q3Value, this.q4Value,
 			this.q5Value, this.q6Value, this.q7Value, this.q8Value,
 			this.q9Value, this.q10Value, this.q11Value, this.q12Value,
-			this.cValue)
+			this.cValue, this.comment)
 			.subscribe(res => {
+					this.layoutUtilsService.showActionNotification('Your Scorecard has been submitted successfully.', MessageType.Update, 4000, true, true);
 					this.router.navigateByUrl('reviewer/dashboard');
 				}
 			);
@@ -124,7 +131,7 @@ export class InProgressComponent implements OnInit, OnDestroy {
 		const scorecard = JSON.parse(sessionStorage.getItem('scorecard'));
 		this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(scorecard.URL);
 
-		this.workID = scorecard['WorkID'];
+		this.workID = scorecard['WID'];
 
 		const scores = scorecard['Scorecard'];
 
@@ -144,7 +151,23 @@ export class InProgressComponent implements OnInit, OnDestroy {
 			this.cValue = this.q1Value + this.q2Value + this.q3Value + this.q4Value + this.q5Value + this.q6Value + this.q7Value + this.q8Value + this.q9Value + this.q10Value + this.q11Value + this.q12Value;
 		}
 
+
+		this.getReviewerComment(this.workID);
+
+		console.log('AAAAAA', this.getReviewerComment(this.workID));
+
 		this.canScore = false;
+	}
+
+	private getReviewerComment(workID) {
+		const user = JSON.parse(sessionStorage.getItem('user'));
+
+
+		this.subscription.push(this.reviewerService.getReviewerComment(workID, user.id).subscribe(
+			res => {
+				this.comment = res;
+			}
+		));
 	}
 
 
@@ -173,8 +196,8 @@ export class InProgressComponent implements OnInit, OnDestroy {
 	// opens up discussion dialog box
 	// it is called when reviewer clicks on the floating button in progress.component.html
 	// it passes workID for loading reviewers messages that related to the work and canScore status
-	// that indicate whether reviewer can send any message via textfield
-	openDiscussionDialogBox(){
+	// that indicates whether reviewer can send any message via textfield
+	openDiscussionDialogBox() {
 		const dialogRef = this.dialog.open(DiscussionComponent, {
 			panelClass: 'discussion-dialog-container',
 			data: {
@@ -183,6 +206,7 @@ export class InProgressComponent implements OnInit, OnDestroy {
 			},
 		});
 	}
+
 
 }
 

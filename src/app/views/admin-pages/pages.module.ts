@@ -99,7 +99,7 @@ const routes:Routes=[
 			},
 			{
 				path: 'user-management',
-				loadChildren: () => import('app/views/pages/user-management/user-management.module').then(m => m.UserManagementModule)
+				loadChildren: () => import('app/views/admin-pages/user-management/user-management.module').then(m => m.UserManagementModule)
 			},
 			{
 				path: 'export-import-db',

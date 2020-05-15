@@ -19,7 +19,7 @@ const routes: Routes = [
 	{path: 'reviewer', loadChildren: () => import('app/views/reviewer-pages/r_pages.module').then(m => m.ReviewerPagesModule)},
 
 	// Admin Page
-	{path: 'admin', loadChildren: () => import('app/views/pages/pages.module').then(m => m.PagesModule)},
+	{path: 'admin', loadChildren: () => import('app/views/admin-pages/pages.module').then(m => m.PagesModule)},
 ];
 
 @NgModule({

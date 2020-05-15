@@ -1,11 +1,11 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import {SafeUrl} from '@angular/platform-browser';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {AdminService} from '../../../core/admin/_services/admin.service';
 import {ReviewerService} from '../../../core/reviewer/_services/reviewer.service';
 import {User1} from '../../../core/auth/_models/user1.model';
+import {LayoutUtilsService, MessageType} from '../../../core/_base/crud';
 
 @Component({
 		selector: 'kt-summary',
@@ -15,28 +15,25 @@ import {User1} from '../../../core/auth/_models/user1.model';
 
 	}
 )
-// Lead Reviewer Summary
-export class SummaryComponent implements OnInit{
+// Lead Reviewer's Summary
+export class SummaryComponent implements OnInit {
 
-	isFullscreen: boolean = false;
 	summary: any;
-
-	subscription: Subscription[] =[];
-
+	subscription: Subscription[] = [];
 
 
 	overallScore: number = 0;
 	scorecards: any;
 
-	adminReview: any;
-	numbReviewers:number=0;
-	threshold: number =0;
+	// for storing number of reviewers for calculating overall score
+	// of the work
+	numbReviewers: number = 0;
 
 	constructor(
-		// private sanitizer: DomSanitizer,
 		private router: Router,
 		private location: Location,
 		private ref: ChangeDetectorRef,
+		private layoutUtilsService: LayoutUtilsService,
 		private adminService: AdminService,
 		private reviewerService: ReviewerService
 	) {
@@ -44,10 +41,9 @@ export class SummaryComponent implements OnInit{
 
 	ngOnInit(): void {
 
+		// gets reviewers scorecards and review summary from the server
 		const subsc = this.adminService.getReviewersScorecard('1', 'reviewed').subscribe(
-			res=>{
-				console.log(res);
-
+			res => {
 				this.summary = res[0];
 				this.scorecards = res[0]['Scorecards'];
 				this.ref.markForCheck();
@@ -68,41 +64,41 @@ export class SummaryComponent implements OnInit{
 	}
 
 
+	// this function is called when user clicks on "Generate" button
+	// it collects the reviewers comments from their scorecards and then generates a review summary
+	// and submit it to the server with status
+
+	// also this function is called when user clicks on cancel button
+	// it will take the user to the previous page
 	onClick(decision: string = '') {
 
-		if (decision == 'generate') {
+		if (decision == '') {
 
-
-		}else {
-			// return to previous menu
 			this.location.back();
-		}
 
-		const wid = this.summary['WID'];
-		const leadReviewerID = this.getUserId();
+		} else {
+			const wid = this.summary['WID'];
+			const leadReviewerID = this.getUserId();
 
-		let summary={
-			WorkID: wid,
-			LeadID:leadReviewerID,
-			WorkFinalScore: this.overallScore/this.numbReviewers,
-			SummaryText: ''
-		}
+			// create a summary object
+			let summary = {
+				WorkID: wid,
+				LeadID: leadReviewerID,
+				WorkFinalScore: this.overallScore / this.numbReviewers,
+				SummaryText: ''
+			};
 
-		if (decision !== '') {
 			this.subscription.push(this.reviewerService.sendSummary(summary).subscribe(
 				() => {
+					this.summary = undefined;
+					this.ref.markForCheck();
+					this.layoutUtilsService.showActionNotification('Summary has been generated and submitted successfully', MessageType.Update, 4000, false, false);
 				},
 
 				error => console.log(error)
 			));
 
-			// this.router.navigateByUrl('/admin/completed-review');
-		} else {
-			// this.location.back();
 		}
-
-
-
 	}
 
 	getTotalScore(scorecard: any) {
@@ -121,11 +117,11 @@ export class SummaryComponent implements OnInit{
 	// displayed on the table
 	// fetch scored scorecard from the server and store the server's respond to session storage
 	// and then redirect to scorecard page (e.g. in-progress)
-	viewScorecard(workID: number, reviewerID:number) {
-		console.log(workID, reviewerID)
+	viewScorecard(workID: number, reviewerID: number) {
+		console.log(workID, reviewerID);
 
 		const subsc = this.reviewerService.getScorecard(workID, reviewerID).subscribe(
-			scorecard=>{
+			scorecard => {
 				sessionStorage.setItem('scorecard', JSON.stringify(scorecard));
 				this.router.navigateByUrl('reviewer/in-progress');
 			}

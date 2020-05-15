@@ -14,6 +14,7 @@ import {ReviewerBaseComponent} from '../theme/reviewer-base/reviewer-base.compon
 import {R_DashboardComponent} from './dashboard/r_dashboard.component';
 import {ThemeModule} from '../theme/theme.module';
 import {ReviewerService} from '../../core/reviewer/_services/reviewer.service';
+
 import {
 	MatButtonModule,
 	MatIconModule,
@@ -37,6 +38,8 @@ import {MessageEffects} from '../../core/reviewer/_effects/message.effects';
 import {AuthGuard, Role} from '../../core/auth';
 import {InProgressComponent} from './assignment/in-progress/in-progress.component';
 import {SummaryComponent} from './summary/summary.component';
+import {LayoutUtilsService} from '../../core/_base/crud';
+import {ActionNotificationComponent} from '../partials/content/crud';
 
 
 const routes: Routes = [
@@ -109,7 +112,7 @@ const routes: Routes = [
 
 	],
 
-	entryComponents: [DiscussionComponent],
+	entryComponents: [DiscussionComponent,ActionNotificationComponent],
 
 
 	exports: [
@@ -145,7 +148,8 @@ const routes: Routes = [
 		ReviewerService,
 		NgbModal,
 		DatePipe,
-		AuthGuard
+		AuthGuard,
+		LayoutUtilsService,
 
 	]
 })
